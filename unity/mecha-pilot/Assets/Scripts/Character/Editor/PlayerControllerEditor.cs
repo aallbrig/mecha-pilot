@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,9 +21,16 @@ namespace Character.Editor
         private void OnSceneGUI()
         {
             var position = _playerTransform.position;
+            var strBuilder = new StringBuilder();
+            strBuilder.Append($"Player {_playerGameObject.name}");
+            strBuilder.Append($"\nMove input {_playerController.MoveInput}");
+            strBuilder.Append($"\nMove vector {_playerController.MoveVector}");
+            strBuilder.Append($"\nFire input {_playerController.FireInput}");
+            strBuilder.Append($"\nFire vector {_playerController.FireVector}");
+
             Handles.Label(
                 position + Vector3.up * 2,
-                $"Player {_playerGameObject.name}\nMove Input {_playerController.MoveInput}\nFire Input {_playerController.FireInput}",
+                strBuilder.ToString(),
                 _labelStyle
             );
             Handles.color = Color.green;
