@@ -15,10 +15,11 @@ namespace Character
         private readonly int _numberOfBullets = 30;
         private CharacterController _characterController;
         private float _timeLastFired;
+        private Transform _transform;
 
-        public Vector3 MoveVector { get; private set; }
+        public Vector3 PlayerMoveVector { get; private set; }
 
-        public Vector3 FireVector { get; private set; }
+        public Vector3 FireDirection { get; private set; }
 
         public Vector2 MoveInput { get; private set; }
 
@@ -26,44 +27,54 @@ namespace Character
 
         private void Start()
         {
+            _transform = transform;
             _timeLastFired = Time.time - timeBetweenShotsInSeconds;
             _characterController = GetComponent<CharacterController>();
             for (var i = 0; i < _numberOfBullets; i++)
-            {
-                var bullet = Instantiate(bulletPrefab);
-                bullet.SetActive(false);
-                _bulletPool.Add(bullet);
-            }
+                _bulletPool.Add(CreatePoolObject());
         }
         private void Update()
         {
             MoveInput = Gamepad.current.leftStick.ReadValue();
-            MoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
             FireInput = Gamepad.current.rightStick.ReadValue();
-            FireVector = new Vector3(FireInput.x, FireInput.y, 0).normalized;
-            _characterController.Move(MoveVector * Time.deltaTime);
-
+            // player is facing camera, so x is backwards -- correcting now
+            MoveInput = new Vector2(-MoveInput.x, MoveInput.y);
+            FireInput = new Vector2(-FireInput.x, FireInput.y);
+            PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
+            FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
+            Move();
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
+
+        }
+        private void Move()
+        {
+            _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
+            _characterController.Move(PlayerMoveVector * Time.deltaTime);
+        }
+        private GameObject CreatePoolObject()
+        {
+            var bullet = Instantiate(bulletPrefab);
+            bullet.SetActive(false);
+            return bullet;
         }
         private void Fire()
         {
             var bullet = GetBulletFromPool();
-            bullet.transform.position = gameObject.transform.position + FireVector * 1.1f;
+            bullet.transform.position = gameObject.transform.position + FireDirection * 1.1f;
             if (bullet.TryGetComponent<Projectile>(out var projectile))
-                projectile.normalizedVector = FireVector;
+            {
+                projectile.firingDirectionNormalized = FireDirection;
+                projectile.initialSpeedVector = PlayerMoveVector;
+            }
             bullet.SetActive(true);
             _timeLastFired = Time.time;
         }
         private GameObject GetBulletFromPool()
         {
-            for (var i = 0; i < _bulletPool.Count; i++)
-            {
-                var bullet = _bulletPool[i];
+            foreach (var bullet in _bulletPool)
                 if (bullet.activeSelf == false)
                     return bullet;
-            }
-            var newBullet = Instantiate(bulletPrefab);
-            newBullet.SetActive(false);
+            var newBullet = CreatePoolObject();
             _bulletPool.Add(newBullet);
             return newBullet;
         }

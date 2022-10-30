@@ -25,9 +25,9 @@ namespace Character.Editor
             var strBuilder = new StringBuilder();
             strBuilder.Append($"Player {_playerGameObject.name}");
             strBuilder.Append($"\nMove input {_playerController.MoveInput}");
-            strBuilder.Append($"\nMove vector {_playerController.MoveVector}");
+            strBuilder.Append($"\nMove vector {_playerController.PlayerMoveVector}");
             strBuilder.Append($"\nFire input {_playerController.FireInput}");
-            strBuilder.Append($"\nFire vector {_playerController.FireVector}");
+            strBuilder.Append($"\nFire vector {_playerController.FireDirection}");
 
             Handles.Label(
                 position + Vector3.up * 2,
