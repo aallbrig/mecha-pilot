@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -39,3 +40,4 @@ namespace Character.Editor
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
 }
+#endif
