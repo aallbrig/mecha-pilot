@@ -60,7 +60,7 @@ namespace Character
         private void Fire()
         {
             var bullet = GetBulletFromPool();
-            bullet.transform.position = gameObject.transform.position + FireDirection * 1.1f;
+            bullet.transform.position = gameObject.transform.position + FireDirection * 1.5f;
             if (bullet.TryGetComponent<Projectile>(out var projectile))
             {
                 projectile.firingDirectionNormalized = FireDirection;
