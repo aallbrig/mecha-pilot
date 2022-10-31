@@ -2,10 +2,6 @@
 
 namespace Gameplay
 {
-    public interface IOutOfPlaySphere
-    {
-        public void OnPlaySphereOutOfBounds();
-    }
 
     [RequireComponent(typeof(SphereCollider))]
     public class PlaySphere : MonoBehaviour
