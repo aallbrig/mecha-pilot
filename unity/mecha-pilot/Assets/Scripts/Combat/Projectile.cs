@@ -11,7 +11,8 @@ namespace Combat
         private void Update()
         {
             if (firingDirectionNormalized == Vector3.zero) gameObject.SetActive(false);
-            transform.Translate(initialSpeedVector + firingDirectionNormalized * (speedInSeconds * Time.deltaTime));
+            transform.Translate(initialSpeedVector * Time.deltaTime +
+                                firingDirectionNormalized * (speedInSeconds * Time.deltaTime));
         }
         public void OnPlaySphereOutOfBounds() => gameObject.SetActive(false);
     }
