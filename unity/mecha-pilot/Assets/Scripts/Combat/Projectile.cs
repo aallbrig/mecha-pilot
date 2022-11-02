@@ -43,6 +43,7 @@ namespace Combat
                 Debug.Log("Collided with something damageable");
                 damageable.Damage(projectileDamage);
                 ImpactHasOccurred?.Invoke(new Impact { Impacter = gameObject, Impactee = collision.gameObject });
+                gameObject.SetActive(false);
             }
         }
 
