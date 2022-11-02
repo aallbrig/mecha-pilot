@@ -32,7 +32,7 @@ namespace Gameplay.Editor
                 strBuilder.ToString(),
                 _labelStyle
             );
-            Handles.color = Color.yellow;
+            Handles.color = Color.magenta;
             Handles.DrawWireDisc(position, Vector3.forward, _sphereCollider.radius);
         }
         public override void OnInspectorGUI() => base.OnInspectorGUI();

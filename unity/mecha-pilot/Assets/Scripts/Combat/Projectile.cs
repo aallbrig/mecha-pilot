@@ -1,10 +1,8 @@
-﻿using System;
-using Gameplay;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Combat
 {
-    public class Projectile : MonoBehaviour, IOutOfPlaySphere
+    public class Projectile : MonoBehaviour
     {
         public Vector3 initialSpeedVector = Vector3.zero;
         public Vector3 firingDirectionNormalized = Vector3.zero;
@@ -15,6 +13,5 @@ namespace Combat
             transform.Translate(initialSpeedVector * Time.deltaTime +
                                 firingDirectionNormalized * (speedInSeconds * Time.deltaTime));
         }
-        public void OnPlaySphereOutOfBounds() => gameObject.SetActive(false);
     }
 }

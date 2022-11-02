@@ -23,6 +23,9 @@ namespace OpposingForce
                 var vectorToPlayer = (_player.transform.position - _transform.position).normalized;
                 _transform.Translate(vectorToPlayer * speed * Time.deltaTime);
             }
+        }
+        private void LateUpdate()
+        {
             _transform.LookAt(_player.transform);
         }
     }

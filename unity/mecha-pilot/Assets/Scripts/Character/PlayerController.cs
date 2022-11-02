@@ -48,8 +48,8 @@ namespace Character
         }
         private void Move()
         {
-            _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
+            if (PlayerMoveVector != Vector3.zero) _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
         }
         private GameObject CreatePoolObject()
         {
