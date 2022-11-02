@@ -13,5 +13,9 @@ namespace Combat
             transform.Translate(initialSpeedVector * Time.deltaTime +
                                 firingDirectionNormalized * (speedInSeconds * Time.deltaTime));
         }
+        private void OnCollisionEnter(Collision collision)
+        {
+            // deactivate on collision
+        }
     }
 }

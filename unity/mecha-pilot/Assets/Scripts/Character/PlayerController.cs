@@ -11,7 +11,7 @@ namespace Character
         public float speed = 7f;
         public GameObject bulletPrefab;
         public float timeBetweenShotsInSeconds = 0.25f;
-        private readonly List<GameObject> _bulletPool = new List<GameObject>();
+        private readonly List<GameObject> _bulletPool = new();
         private readonly int _numberOfBullets = 30;
         private CharacterController _characterController;
         private float _timeLastFired;
@@ -49,12 +49,14 @@ namespace Character
         private void Move()
         {
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
-            if (PlayerMoveVector != Vector3.zero) _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
+            if (PlayerMoveVector != Vector3.zero)
+                _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
         }
         private GameObject CreatePoolObject()
         {
             var bullet = Instantiate(bulletPrefab);
             bullet.SetActive(false);
+            bullet.layer = gameObject.layer;
             return bullet;
         }
         private void Fire()

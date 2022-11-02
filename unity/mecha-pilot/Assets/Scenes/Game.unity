@@ -201,8 +201,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75119526}
-  m_LocalRotation: {x: -0, y: 0.9999805, z: 0.0062496345, w: 0}
-  m_LocalPosition: {x: 0, y: -0.25, z: 20}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -291,6 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 259446124}
   - component: {fileID: 259446125}
+  - component: {fileID: 259446126}
   m_Layer: 0
   m_Name: Player vcam
   m_TagString: Untagged
@@ -305,8 +306,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259446123}
-  m_LocalRotation: {x: -0, y: 0.9999805, z: 0.0062496345, w: 0}
-  m_LocalPosition: {x: 0, y: -0.25, z: 20}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -352,6 +353,22 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 2093018899}
+--- !u!114 &259446126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259446123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed38f477dd44430d97f0e2cc1ca97af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portraitFollowOffset: {x: 0, y: 0, z: 20}
+  landscapeFollowOffset: {x: 0, y: 0, z: 15}
+  portraitZAxis: 20
+  landscapeZAxis: 15
 --- !u!1 &262806175
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,6 +944,7 @@ GameObject:
   - component: {fileID: 1409960599}
   - component: {fileID: 1409960600}
   - component: {fileID: 1409960601}
+  - component: {fileID: 1409960602}
   m_Layer: 7
   m_Name: Basic Enemy Spawner
   m_TagString: Untagged
@@ -1005,6 +1023,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 1764826170}
+--- !u!114 &1409960602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409960596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd856ab82b44da39985dc04ac285dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deActiveOnOutOfPlaySphere: 1
 --- !u!1 &1435882937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,7 +1654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.25, z: 20}
+  m_FollowOffset: {x: 0, y: 0, z: 15}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
