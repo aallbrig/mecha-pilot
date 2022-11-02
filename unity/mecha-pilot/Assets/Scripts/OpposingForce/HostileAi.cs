@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace OpposingForce
@@ -22,11 +21,9 @@ namespace OpposingForce
             {
                 var vectorToPlayer = (_player.transform.position - _transform.position).normalized;
                 _transform.Translate(vectorToPlayer * speed * Time.deltaTime);
+                _transform.position = new Vector3(_transform.position.x, _transform.position.y, 0);
             }
         }
-        private void LateUpdate()
-        {
-            _transform.LookAt(_player.transform);
-        }
+        private void LateUpdate() => _transform.LookAt(_player.transform);
     }
 }

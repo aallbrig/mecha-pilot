@@ -367,8 +367,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portraitFollowOffset: {x: 0, y: 0, z: 20}
   landscapeFollowOffset: {x: 0, y: 0, z: 15}
-  portraitZAxis: 20
-  landscapeZAxis: 15
 --- !u!1 &262806175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1754,6 +1752,18 @@ PrefabInstance:
     - target: {fileID: 837836837611287687, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233455658219981391, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233455658219981391, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233455658219981391, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
