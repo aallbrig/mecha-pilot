@@ -5,9 +5,10 @@ namespace OpposingForce
 {
     public class HostileAi : MonoBehaviour
     {
-        public float detectionDistance = 20f;
-        public float closeEnoughDistance = 5f;
-        public float speed = 3.0f;
+        public float detectionDistance = 124f;
+        public float closeEnoughDistance;
+        public float speed = 6.0f;
+        private float _distanceToPlayer;
         private GameObject _player;
         private Transform _transform;
         private void Start()
@@ -20,13 +21,10 @@ namespace OpposingForce
         {
             if (_player == null) return;
 
-            var distanceToPlayer = Vector3.Distance(_transform.position, _player.transform.position);
-            if (distanceToPlayer < detectionDistance && distanceToPlayer > closeEnoughDistance)
-            {
-                var vectorToPlayer = (_player.transform.position - _transform.position).normalized;
-                _transform.Translate(vectorToPlayer * speed * Time.deltaTime);
-                _transform.position = new Vector3(_transform.position.x, _transform.position.y, 0);
-            }
+            _distanceToPlayer = Vector3.Distance(_transform.position, _player.transform.position);
+            if (_distanceToPlayer < detectionDistance && _distanceToPlayer > closeEnoughDistance)
+                _transform.position =
+                    Vector3.MoveTowards(_transform.position, _player.transform.position, speed * Time.deltaTime);
         }
         private void LateUpdate()
         {

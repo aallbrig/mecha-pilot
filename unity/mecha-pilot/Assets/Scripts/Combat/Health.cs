@@ -9,6 +9,8 @@ namespace Combat
         private float _currentHealth;
         private void Start() => _currentHealth = maxHealth;
 
+        public void OnCollisionEnter(Collision collision) => Damage(maxHealth);
+
         public event Action<GameObject> Died;
 
         public void Damage(float amount)

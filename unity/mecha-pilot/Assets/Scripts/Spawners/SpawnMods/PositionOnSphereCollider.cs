@@ -6,7 +6,6 @@ namespace Spawners.SpawnMods
     {
         public SphereCollider sphereCollider;
         public float insetValue;
-        private bool _active;
         private Transform _sphereColliderTransform;
         private void Start()
         {
