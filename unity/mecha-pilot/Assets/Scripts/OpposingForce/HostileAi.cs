@@ -1,3 +1,4 @@
+using Character;
 using UnityEngine;
 
 namespace OpposingForce
@@ -12,7 +13,8 @@ namespace OpposingForce
         private void Start()
         {
             _transform = transform;
-            _player = FindObjectOfType<CharacterController>().gameObject;
+            var playerController = FindObjectOfType<PlayerController>();
+            if (playerController) _player = FindObjectOfType<PlayerController>().gameObject;
         }
         private void Update()
         {

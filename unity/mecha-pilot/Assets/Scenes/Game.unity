@@ -1540,6 +1540,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 1519973261}
   beforeScoreText: 'Score:'
+--- !u!1 &1589714649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 837836837547629702, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+  m_PrefabInstance: {fileID: 837836837476915007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1589714654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589714649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26754394da0f407f96ea5354c8772933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 4635019335779838631, guid: c6a99adcf823143e2a8654f9eef5a5e8, type: 3}
 --- !u!1 &1657028229
 GameObject:
   m_ObjectHideFlags: 0
