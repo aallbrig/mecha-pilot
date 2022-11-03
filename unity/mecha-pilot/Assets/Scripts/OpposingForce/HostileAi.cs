@@ -16,6 +16,8 @@ namespace OpposingForce
         }
         private void Update()
         {
+            if (_player == null) return;
+
             var distanceToPlayer = Vector3.Distance(_transform.position, _player.transform.position);
             if (distanceToPlayer < detectionDistance && distanceToPlayer > closeEnoughDistance)
             {
@@ -24,6 +26,10 @@ namespace OpposingForce
                 _transform.position = new Vector3(_transform.position.x, _transform.position.y, 0);
             }
         }
-        private void LateUpdate() => _transform.LookAt(_player.transform);
+        private void LateUpdate()
+        {
+            if (_player == null) return;
+            _transform.LookAt(_player.transform);
+        }
     }
 }

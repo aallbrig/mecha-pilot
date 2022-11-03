@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Combat;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace Character
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ICanDie
     {
         public float speed = 7f;
         public GameObject bulletPrefab;
@@ -46,6 +47,11 @@ namespace Character
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
 
         }
+
+        private void OnCollisionEnter(Collision collision) => Died?.Invoke(gameObject);
+
+        public event Action<GameObject> Died;
+
         private void Move()
         {
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
