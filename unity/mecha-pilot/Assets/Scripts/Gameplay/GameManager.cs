@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CleverCrow.Fluid.FSMs;
 using Combat;
@@ -67,6 +68,7 @@ namespace Gameplay
                         .Exit(_ =>
                         {
                             onGameOverExit.ForEach(fn => fn.Invoke());
+                            GameIsOver?.Invoke();
                         })
                         .SetTransition(nameof(GameState.Menu), GameState.Menu)
                         .Update(action =>
@@ -95,5 +97,7 @@ namespace Gameplay
                 .Build();
         }
         private void Update() => _fsm.Tick();
+
+        public event Action GameIsOver;
     }
 }

@@ -1,4 +1,5 @@
 using Character;
+using Gameplay;
 using UnityEngine;
 
 namespace OpposingForce
@@ -9,13 +10,16 @@ namespace OpposingForce
         public float closeEnoughDistance;
         public float speed = 6.0f;
         private float _distanceToPlayer;
+        private GameManager _gameManager;
         private GameObject _player;
         private Transform _transform;
         private void Start()
         {
             _transform = transform;
-            var playerController = FindObjectOfType<PlayerController>();
-            if (playerController) _player = FindObjectOfType<PlayerController>().gameObject;
+            var playerController = FindObjectOfType<PlayerController>(true);
+            if (playerController) _player = FindObjectOfType<PlayerController>(true).gameObject;
+            _gameManager = FindObjectOfType<GameManager>();
+            _gameManager.GameIsOver += () => gameObject.SetActive(false);
         }
         private void Update()
         {

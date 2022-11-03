@@ -1,18 +1,19 @@
 using System;
-using System.Collections.Generic;
 using Combat;
+using Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Character
 {
     [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(ObjectPool))]
     public class PlayerController : MonoBehaviour, ICanDie
     {
         public float speed = 7f;
         public GameObject bulletPrefab;
         public float timeBetweenShotsInSeconds = 0.25f;
-        private readonly List<GameObject> _bulletPool = new();
+        public ObjectPool bulletPool;
         private readonly int _numberOfBullets = 30;
         private CharacterController _characterController;
         private float _timeLastFired;
@@ -31,8 +32,12 @@ namespace Character
             _transform = transform;
             _timeLastFired = Time.time - timeBetweenShotsInSeconds;
             _characterController = GetComponent<CharacterController>();
-            for (var i = 0; i < _numberOfBullets; i++)
-                _bulletPool.Add(CreatePoolObject());
+            bulletPool ??= GetComponent<ObjectPool>();
+            if (bulletPool == null)
+            {
+                enabled = false;
+                throw new NullReferenceException("bullet pool required");
+            }
         }
         private void Update()
         {
@@ -45,7 +50,6 @@ namespace Character
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             Move();
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
-
         }
 
         private void OnCollisionEnter(Collision collision) => Died?.Invoke(gameObject);
@@ -73,18 +77,11 @@ namespace Character
             {
                 projectile.firingDirectionNormalized = FireDirection;
                 projectile.initialSpeedVector = PlayerMoveVector;
+                projectile.ImpactHasOccurred += impact => bulletPool.RecyclePoolObject(impact.Impacter);
             }
             bullet.SetActive(true);
             _timeLastFired = Time.time;
         }
-        private GameObject GetBulletFromPool()
-        {
-            foreach (var bullet in _bulletPool)
-                if (bullet.activeSelf == false)
-                    return bullet;
-            var newBullet = CreatePoolObject();
-            _bulletPool.Add(newBullet);
-            return newBullet;
-        }
+        private GameObject GetBulletFromPool() => bulletPool.GetPoolObject();
     }
 }

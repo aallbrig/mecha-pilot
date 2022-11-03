@@ -1,4 +1,5 @@
 using System;
+using Gameplay;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,23 +17,23 @@ namespace Spawners
 
     public class Spawner : MonoBehaviour, ISpawner
     {
-        public GameObject prefabToSpawn;
         public SpawnType spawnType = SpawnType.Repeat;
+        public ObjectPool spawneePool;
         [Range(0f, 50f)] public float minDelayTimeInSeconds;
         [Range(0f, 50f)] public float maxDelayTimeInSeconds;
-        private bool _active = true;
+        private readonly bool _active = true;
         private float _delayTime;
         private float _timeOfLastSpawn;
         private void Start()
         {
             _timeOfLastSpawn = Time.time - maxDelayTimeInSeconds;
             _delayTime = NewDelayTime();
+            spawneePool ??= GetComponent<ObjectPool>();
         }
         private void Update()
         {
             if (_active && Time.time - _timeOfLastSpawn > _delayTime) Spawn();
         }
-        private void OnValidate() => _active = prefabToSpawn != null;
 
         public event Action<GameObject> Spawned;
 
@@ -42,10 +43,16 @@ namespace Spawners
         {
             if (!_active) return;
 
-            var spawnedGameObject = Instantiate(prefabToSpawn);
+            var spawnedGameObject = GetGameObjectToSpawn();
             Spawned?.Invoke(spawnedGameObject);
             _timeOfLastSpawn = Time.time;
             _delayTime = NewDelayTime();
+        }
+        private GameObject GetGameObjectToSpawn()
+        {
+            var poolObject = spawneePool.GetPoolObject();
+            poolObject.SetActive(true);
+            return poolObject;
         }
     }
 }

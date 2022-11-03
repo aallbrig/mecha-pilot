@@ -13,9 +13,9 @@ namespace Gameplay
         private void Start()
         {
             textMesh ??= GetComponent<TextMeshProUGUI>();
-            SyncCurrentScore();
+            Reset();
         }
-        private void OnEnable() => _currentScore = 0;
+        private void OnEnable() => Reset();
 
         public event Action<ScoreAddedResult> ScoreAdded;
 
@@ -28,6 +28,11 @@ namespace Gameplay
             _currentScore = result.UpdatedScore;
             SyncCurrentScore();
             ScoreAdded?.Invoke(result);
+        }
+        public void Reset()
+        {
+            _currentScore = 0;
+            SyncCurrentScore();
         }
         private void SyncCurrentScore() => textMesh.text = $"{beforeScoreText} {_currentScore}";
     }
@@ -46,5 +51,6 @@ namespace Gameplay
         public event Action<ScoreAddedResult> ScoreAdded;
 
         public void AddToCurrentScore(int scoreIncrease);
+        public void Reset();
     }
 }

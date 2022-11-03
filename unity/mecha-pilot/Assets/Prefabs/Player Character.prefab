@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 837836837547629699}
   - component: {fileID: 1589714652}
   - component: {fileID: 1589714653}
+  - component: {fileID: 8719977425291792671}
   m_Layer: 6
   m_Name: Player Character
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
   speed: 10
   bulletPrefab: {fileID: 6620913344505356815, guid: b9f9a8fbfb3f45546b301989fafac1d0, type: 3}
   timeBetweenShotsInSeconds: 0.25
+  bulletPool: {fileID: 8719977425291792671}
 --- !u!143 &837836837547629699
 CharacterController:
   m_ObjectHideFlags: 0
@@ -96,6 +98,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   framesTilDeactivate: 3
+--- !u!114 &8719977425291792671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837836837547629702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 719ecb3f8e4944eb930a59a6d90f96c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabToPool: {fileID: 6620913344505356815, guid: b9f9a8fbfb3f45546b301989fafac1d0, type: 3}
+  poolCount: 30
+  parentTransform: {fileID: 0}
 --- !u!1 &837836837611287689
 GameObject:
   m_ObjectHideFlags: 0
