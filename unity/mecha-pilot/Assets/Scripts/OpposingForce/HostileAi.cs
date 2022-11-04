@@ -18,7 +18,7 @@ namespace OpposingForce
             _transform = transform;
             var playerController = FindObjectOfType<PlayerController>(true);
             if (playerController) _player = FindObjectOfType<PlayerController>(true).gameObject;
-            _gameManager = FindObjectOfType<GameManager>();
+            _gameManager = FindObjectOfType<GameManager>(true);
             _gameManager.GameIsOver += () => gameObject.SetActive(false);
         }
         private void Update()
@@ -33,6 +33,7 @@ namespace OpposingForce
         private void LateUpdate()
         {
             if (_player == null) return;
+
             _transform.LookAt(_player.transform);
         }
     }
