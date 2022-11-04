@@ -14,7 +14,6 @@ namespace Character
         public GameObject bulletPrefab;
         public float timeBetweenShotsInSeconds = 0.25f;
         public ObjectPool bulletPool;
-        private readonly int _numberOfBullets = 30;
         private CharacterController _characterController;
         private float _timeLastFired;
         private Transform _transform;
@@ -41,6 +40,7 @@ namespace Character
         }
         private void Update()
         {
+            if (Gamepad.current == null) return;
             MoveInput = Gamepad.current.leftStick.ReadValue();
             FireInput = Gamepad.current.rightStick.ReadValue();
             // player is facing camera, so x is backwards -- correcting now
