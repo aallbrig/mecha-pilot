@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ef1edf2f754c1ebac39515ec56f0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  framesTilDeactivate: 3
+  framesTilDeactivate: 0
 --- !u!114 &-2861831119693775932
 MonoBehaviour:
   m_ObjectHideFlags: 0

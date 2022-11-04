@@ -22,17 +22,19 @@ namespace Combat
         public event Action<Impact> ImpactHasOccurred;
     }
 
+    [RequireComponent(typeof(Rigidbody))]
     public class Projectile : MonoBehaviour, IProduceImpact
     {
-        public Vector3 initialSpeedVector = Vector3.zero;
         public Vector3 firingDirectionNormalized = Vector3.zero;
         public float speedInSeconds = 10f;
         public float projectileDamage = 10f;
-        private void Update()
+        private Rigidbody _rigidbody;
+
+        private void Awake() => _rigidbody ??= GetComponent<Rigidbody>();
+        private void OnEnable()
         {
             if (firingDirectionNormalized == Vector3.zero) gameObject.SetActive(false);
-            transform.Translate(initialSpeedVector * Time.deltaTime +
-                                firingDirectionNormalized * (speedInSeconds * Time.deltaTime));
+            _rigidbody.velocity = firingDirectionNormalized * speedInSeconds;
         }
         private void OnCollisionEnter(Collision collision)
         {

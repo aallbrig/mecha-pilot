@@ -72,11 +72,10 @@ namespace Character
         private void Fire()
         {
             var bullet = GetBulletFromPool();
-            bullet.transform.position = gameObject.transform.position + FireDirection * 2f;
+            bullet.transform.position = gameObject.transform.position + FireDirection * 3f;
             if (bullet.TryGetComponent<Projectile>(out var projectile))
             {
                 projectile.firingDirectionNormalized = FireDirection;
-                projectile.initialSpeedVector = PlayerMoveVector;
                 projectile.ImpactHasOccurred += impact => bulletPool.RecyclePoolObject(impact.Impacter);
             }
             bullet.SetActive(true);

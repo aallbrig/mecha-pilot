@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using CleverCrow.Fluid.FSMs;
 using Combat;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Gameplay
@@ -21,12 +19,6 @@ namespace Gameplay
         public float enoughTimeHasPassed = 2f;
         public Button playButton;
         public Button resetButton;
-        public List<UnityEvent> onMenuEnter;
-        public List<UnityEvent> onMenuExit;
-        public List<UnityEvent> onGamePlayEnter;
-        public List<UnityEvent> onGamePlayExit;
-        public List<UnityEvent> onGameOverEnter;
-        public List<UnityEvent> onGameOverExit;
         private GameState _currentState;
         private IFsm _fsm;
         private bool _gameOver;
@@ -53,10 +45,13 @@ namespace Gameplay
                         .Enter(_ =>
                         {
                             _playGameButton = false;
-                            onMenuEnter.ForEach(fn => fn.Invoke());
+                            GameManagerStateEntered?.Invoke(GameState.Menu);
                         })
                         .SetTransition(nameof(GameState.GamePlay), GameState.GamePlay)
-                        .Exit(_ => onMenuExit.ForEach(fn => fn.Invoke()))
+                        .Exit(_ =>
+                        {
+                            GameManagerStateExited?.Invoke(GameState.Menu);
+                        })
                         .Update(action =>
                         {
                             if (_playGameButton) action.Transition(nameof(GameState.GamePlay));
@@ -69,11 +64,11 @@ namespace Gameplay
                         .Enter(_ =>
                         {
                             _resetButtonClicked = false;
-                            onGameOverEnter.ForEach(fn => fn.Invoke());
+                            GameManagerStateEntered?.Invoke(GameState.GameOver);
                         })
                         .Exit(_ =>
                         {
-                            onGameOverExit.ForEach(fn => fn.Invoke());
+                            GameManagerStateExited?.Invoke(GameState.GameOver);
                             GameIsOver?.Invoke();
                         })
                         .SetTransition(nameof(GameState.Menu), GameState.Menu)
@@ -88,11 +83,11 @@ namespace Gameplay
                         .Enter(_ =>
                         {
                             _gameOver = false;
-                            onGamePlayEnter.ForEach(fn => fn.Invoke());
+                            GameManagerStateEntered?.Invoke(GameState.GamePlay);
                         })
                         .Exit(_ =>
                         {
-                            onGamePlayExit.ForEach(fn => fn.Invoke());
+                            GameManagerStateExited?.Invoke(GameState.GamePlay);
                         })
                         .SetTransition(nameof(GameState.GameOver), GameState.GameOver)
                         .Update(action =>
@@ -104,6 +99,10 @@ namespace Gameplay
                 .Build();
         }
         private void Update() => _fsm.Tick();
+
+        public event Action<GameState> GameManagerStateEntered;
+
+        public event Action<GameState> GameManagerStateExited;
 
         public event Action GameIsOver;
     }
