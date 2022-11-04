@@ -23,7 +23,9 @@ namespace Spawners.SpawnMods
                     randomizedPosition.y - insetOffset.y,
                     0
                 );
-            spawnedGameObject.transform.position = calculatedPosition;
+            spawnedGameObject.transform.position = new Vector3(calculatedPosition.x, calculatedPosition.y, 0);
+            // Trail renderer will leave trails if set active doesn't happen here
+            spawnedGameObject.SetActive(true);
         }
     }
 }
