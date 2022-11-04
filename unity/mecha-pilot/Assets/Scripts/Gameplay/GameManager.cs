@@ -18,6 +18,7 @@ namespace Gameplay
     public class GameManager : MonoBehaviour
     {
         public GameObject player;
+        public float enoughTimeHasPassed = 2f;
         public Button playButton;
         public Button resetButton;
         public List<UnityEvent> onMenuEnter;
@@ -29,6 +30,7 @@ namespace Gameplay
         private GameState _currentState;
         private IFsm _fsm;
         private bool _gameOver;
+        private float _gameOverTime;
         private bool _playGameButton;
         private bool _resetButtonClicked;
         private void Start()
@@ -36,7 +38,11 @@ namespace Gameplay
             if (playButton) playButton.onClick.AddListener(() => _playGameButton = true);
             if (resetButton) resetButton.onClick.AddListener(() => _resetButtonClicked = true);
             if (player && player.TryGetComponent<ICanDie>(out var ableToDie))
-                ableToDie.Died += _ => _gameOver = true;
+                ableToDie.Died += _ =>
+                {
+                    _gameOver = true;
+                    _gameOverTime = Time.time;
+                };
 
             _fsm = new FsmBuilder()
                 .Owner(gameObject)
@@ -91,7 +97,8 @@ namespace Gameplay
                         .SetTransition(nameof(GameState.GameOver), GameState.GameOver)
                         .Update(action =>
                         {
-                            if (_gameOver) action.Transition(nameof(GameState.GameOver));
+                            if (_gameOver && Time.time - _gameOverTime > enoughTimeHasPassed)
+                                action.Transition(nameof(GameState.GameOver));
                         });
                 })
                 .Build();

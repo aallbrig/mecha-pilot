@@ -23,9 +23,12 @@ namespace Spawners
         [Range(0f, 50f)] public float maxDelayTimeInSeconds;
         private readonly bool _active = true;
         private float _delayTime;
+        private GameManager _gameManager;
         private float _timeOfLastSpawn;
         private void Start()
         {
+            _gameManager = FindObjectOfType<GameManager>(true);
+            _gameManager.GameIsOver += () => gameObject.SetActive(false);
             _timeOfLastSpawn = Time.time - maxDelayTimeInSeconds;
             _delayTime = NewDelayTime();
             spawneePool ??= GetComponent<ObjectPool>();
