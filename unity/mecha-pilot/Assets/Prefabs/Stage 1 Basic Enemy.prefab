@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8260577371790271297}
   - component: {fileID: 395663485715282254}
   - component: {fileID: 1878358806009676577}
+  - component: {fileID: -5027130660319486654}
   m_Layer: 0
   m_Name: Stage 1 Basic Enemy
   m_TagString: Untagged
@@ -182,6 +183,18 @@ MonoBehaviour:
   trailRenderers:
   - {fileID: 2825461088182101677}
   - {fileID: 6252657895622053159}
+--- !u!114 &-5027130660319486654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297696619472962579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13adb615b6fa4369806cd2696e9e3ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &774244534808430986
 GameObject:
   m_ObjectHideFlags: 0

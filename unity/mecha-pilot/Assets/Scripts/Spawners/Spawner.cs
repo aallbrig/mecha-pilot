@@ -54,7 +54,6 @@ namespace Spawners
         private GameObject GetGameObjectToSpawn()
         {
             var poolObject = spawneePool.GetPoolObject();
-            // poolObject.SetActive(true);
             return poolObject;
         }
     }
