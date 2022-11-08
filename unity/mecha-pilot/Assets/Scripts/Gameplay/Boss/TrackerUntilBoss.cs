@@ -1,4 +1,5 @@
 using Combat;
+using Combat.OnDiedBehavior;
 using Gameplay.OutOfPlaySphereBehaviors;
 using Spawners;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 namespace Gameplay.Boss
 {
+    [RequireComponent(typeof(Slider))]
     public class TrackerUntilBoss : MonoBehaviour
     {
         public Spawner spawner;
@@ -18,21 +20,23 @@ namespace Gameplay.Boss
             sliderUi.minValue = 0;
             sliderUi.maxValue = enemiesBeforeBoss;
             spawner ??= FindObjectOfType<Spawner>();
-            if (spawner)
-                spawner.Spawned += spawnee =>
-                {
-                    var ableToDie = spawnee.GetComponent<ICanDie>();
-                    ableToDie.Died += TrackDeath;
-                    spawnee.GetComponent<DeactivateWhenOutsidePlaySphere>().Deactivated += () =>
-                    {
-                        ableToDie.Died -= TrackDeath;
-                    };
-                };
         }
         private void OnEnable()
         {
             _currentEnemiesKilledCount = 0;
             SyncSlider();
+            if (spawner) spawner.Spawned += HandleSpawnerSpawned;
+        }
+        private void OnDisable()
+        {
+            if (spawner) spawner.Spawned -= HandleSpawnerSpawned;
+        }
+        private void HandleSpawnerSpawned(GameObject spawnee)
+        {
+            var ableToDie = spawnee.GetComponent<ICanDie>();
+            ableToDie.Died += TrackDeath;
+            spawnee.GetComponent<DeactivateWhenOutsidePlaySphere>().Deactivated += () => ableToDie.Died -= TrackDeath;
+            spawnee.GetComponent<DeactivateOnPlayerDeath>().Deactivated += () => ableToDie.Died -= TrackDeath;
         }
         private void TrackDeath(GameObject enemy)
         {
