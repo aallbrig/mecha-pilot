@@ -1,55 +1,33 @@
 using System;
 using Gameplay;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Spawners
 {
-    public enum SpawnType
-    {
-        Repeat
-    }
-
     public interface ISpawner
     {
         public event Action<GameObject> Spawned;
     }
 
-    public class Spawner : MonoBehaviour, ISpawner
+    public abstract class Spawner : MonoBehaviour, ISpawner
     {
-        public SpawnType spawnType = SpawnType.Repeat;
         public ObjectPool spawneePool;
-        [Range(0f, 50f)] public float minDelayTimeInSeconds;
-        [Range(0f, 50f)] public float maxDelayTimeInSeconds;
-        private readonly bool _active = true;
-        private float _delayTime;
-        private GameManager _gameManager;
-        private float _timeOfLastSpawn;
-        private void Start()
-        {
-            _gameManager = FindObjectOfType<GameManager>(true);
-            _gameManager.GameIsOver += () => gameObject.SetActive(false);
-            _timeOfLastSpawn = Time.time - maxDelayTimeInSeconds;
-            _delayTime = NewDelayTime();
-            spawneePool ??= GetComponent<ObjectPool>();
-        }
+        protected float TimeOfLastSpawn;
+        private void Start() => spawneePool ??= GetComponent<ObjectPool>();
         private void Update()
         {
-            if (_active && Time.time - _timeOfLastSpawn > _delayTime) Spawn();
+            if (ShouldSpawn()) Spawn();
         }
 
         public event Action<GameObject> Spawned;
 
-        private float NewDelayTime() => Random.Range(minDelayTimeInSeconds, maxDelayTimeInSeconds);
+        protected abstract bool ShouldSpawn();
         [ContextMenu("Spawn")]
-        private void Spawn()
+        protected void Spawn()
         {
-            if (!_active) return;
-
             var spawnedGameObject = GetGameObjectToSpawn();
+            TimeOfLastSpawn = Time.time;
             Spawned?.Invoke(spawnedGameObject);
-            _timeOfLastSpawn = Time.time;
-            _delayTime = NewDelayTime();
         }
         private GameObject GetGameObjectToSpawn()
         {

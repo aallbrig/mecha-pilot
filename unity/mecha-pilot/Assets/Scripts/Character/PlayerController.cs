@@ -9,7 +9,6 @@ namespace Character
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(ObjectPool))]
-    [RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
     public class PlayerController : MonoBehaviour, ICanDie, IProcessMovement, IProcessFireWeaponCommand
     {
         public float speed = 7f;
@@ -54,25 +53,16 @@ namespace Character
         }
         private void Update()
         {
-            // if (Gamepad.current == null) return;
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
             if (PlayerMoveVector != Vector3.zero)
                 _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
-            // MoveInput = Gamepad.current.leftStick.ReadValue();
-            // FireInput = Gamepad.current.rightStick.ReadValue();
-            // player is facing camera, so x is backwards -- correcting now
-            // MoveInput = new Vector2(-MoveInput.x, MoveInput.y);
-            // FireInput = new Vector2(-FireInput.x, FireInput.y);
-            // PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
-            // FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
-            // Move();
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
         }
         private void OnEnable() => _playerInput.Enable();
         private void OnDisable() => _playerInput.Disable();
 
-        private void OnCollisionEnter(Collision collision) => Died?.Invoke(gameObject);
+        private void OnCollisionEnter() => Died?.Invoke(gameObject);
 
         public event Action<GameObject> Died;
 
