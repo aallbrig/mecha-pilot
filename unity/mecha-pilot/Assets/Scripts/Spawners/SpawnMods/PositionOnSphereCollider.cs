@@ -2,14 +2,17 @@ using UnityEngine;
 
 namespace Spawners.SpawnMods
 {
+    [RequireComponent(typeof(Spawner))]
     public class PositionOnSphereCollider : SpawnerModBase
     {
         public SphereCollider sphereCollider;
         public float insetValue;
+        [SerializeField] private Spawner spawner;
         private Transform _sphereColliderTransform;
-        private void Start()
+        private void Awake()
         {
-            Spawner.Spawned += PositionSpawnedOnSphereCollider;
+            spawner ??= GetComponent<Spawner>();
+            spawner.Spawned += PositionSpawnedOnSphereCollider;
             if (sphereCollider) _sphereColliderTransform = sphereCollider.gameObject.transform;
         }
         private void PositionSpawnedOnSphereCollider(GameObject spawnedGameObject)

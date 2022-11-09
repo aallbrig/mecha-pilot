@@ -1957,7 +1957,6 @@ GameObject:
   - component: {fileID: 1409960602}
   - component: {fileID: 1409960603}
   - component: {fileID: 1409960605}
-  - component: {fileID: 1409960604}
   - component: {fileID: 1409960606}
   m_Layer: 7
   m_Name: Basic Enemy Spawner
@@ -2008,6 +2007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphereCollider: {fileID: 2119645693}
   insetValue: 15
+  spawner: {fileID: 1409960606}
 --- !u!114 &1409960601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2049,21 +2049,6 @@ MonoBehaviour:
   prefabToPool: {fileID: 297696619472962579, guid: 016a203e6c2ae4e009ec44787a228029, type: 3}
   poolCount: 50
   parentTransform: {fileID: 1764826170}
---- !u!114 &1409960604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409960596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba69502316d64247b5e0656406aeeff9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawneePool: {fileID: 1409960603}
-  minDelayTimeInSeconds: 0.33
-  maxDelayTimeInSeconds: 5
 --- !u!114 &1409960605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2083,16 +2068,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409960596}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef562bb734a84194949824617ee44500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawneePool: {fileID: 1409960603}
-  minDelayTimeInSeconds: 1
-  maxDelayTimeInSeconds: 3
+  minDelayTimeInSeconds: 0.25
+  maxDelayTimeInSeconds: 1
   enemiesLimit: 1
-  amountToRampUpPerKill: 0.25
+  amountToAddToEnemyCountPerKill: 0.25
+  beginnerTimeBuffer: 3
+  bufferToDecreaseByPerKill: 0.2
 --- !u!1 &1435882937
 GameObject:
   m_ObjectHideFlags: 0

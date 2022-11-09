@@ -18,7 +18,11 @@ namespace Gameplay
                 throw new NullReferenceException("prefab needs to be set before object pool works");
             }
             for (var i = 0; i < poolCount; i++)
-                _pool.Add(CreatePoolObject());
+            {
+                var poolObject = CreatePoolObject();
+                poolObject.name = $"{prefabToPool.name} {i}";
+                _pool.Add(poolObject);
+            }
         }
         private GameObject CreatePoolObject()
         {
