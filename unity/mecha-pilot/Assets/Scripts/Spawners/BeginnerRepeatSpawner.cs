@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Combat;
+using Combat.OnDiedBehavior;
 using Gameplay.OutOfPlaySphereBehaviors;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ namespace Spawners
         public float amountToAddToEnemyCountPerKill = 0.25f;
         public float beginnerTimeBuffer = 3f;
         public float bufferToDecreaseByPerKill = 0.2f;
+        private readonly List<GameObject> alreadyListening = new();
         private float _currentBeginnerTimeBuffer;
         private int _currentEnemiesCount;
         private float _currentEnemiesLimit;
@@ -26,16 +29,36 @@ namespace Spawners
 
             _currentEnemiesCount++;
 
-            if (spawnee.TryGetComponent<DeactivateWhenOutsidePlaySphere>(out var outsidePlaySphere))
-                outsidePlaySphere.Deactivated += () => _currentEnemiesCount--;
-            if (spawnee.TryGetComponent<ICanDie>(out var ableToDie))
-                ableToDie.Died += _ =>
+            // quick fix: only bind listeners once
+            if (!alreadyListening.Contains(spawnee))
+            {
+                if (spawnee.TryGetComponent<DeactivateWhenOutsidePlaySphere>(out var outsidePlaySphere))
                 {
-                    _currentEnemiesCount--;
-                    _currentEnemiesLimit += amountToAddToEnemyCountPerKill;
-                    _currentBeginnerTimeBuffer -= bufferToDecreaseByPerKill;
-                };
+                    void OnDeactivated() => _currentEnemiesCount--;
+
+                    outsidePlaySphere.Deactivated += OnDeactivated;
+                }
+                if (spawnee.TryGetComponent<DeactivateOnPlayerDeath>(out var onPlayerDied))
+                {
+                    void OnDeactivated() => _currentEnemiesCount--;
+
+                    onPlayerDied.Deactivated += OnDeactivated;
+                }
+                if (spawnee.TryGetComponent<ICanDie>(out var ableToDie))
+                {
+                    void OnDied(GameObject deadGameObject)
+                    {
+                        _currentEnemiesCount--;
+                        _currentEnemiesLimit += amountToAddToEnemyCountPerKill;
+                        _currentBeginnerTimeBuffer -= bufferToDecreaseByPerKill;
+                    }
+
+                    ableToDie.Died += OnDied;
+                }
+                alreadyListening.Add(spawnee);
+            }
         }
+        private void OnSpawnedGameObjectDied(GameObject deadGameObject) {}
         protected override bool ShouldSpawn()
         {
             var calculatedLimit = (int)Mathf.Floor(_currentEnemiesLimit);
@@ -44,9 +67,10 @@ namespace Spawners
         }
         protected override float NewDelayTime()
         {
-            var calculatedDelayTime = base.NewDelayTime();
-            if (_currentBeginnerTimeBuffer > 0f)
-                calculatedDelayTime += _currentBeginnerTimeBuffer;
+            var calculatedDelayTime = _currentBeginnerTimeBuffer > 0f
+                ? Random.Range(minDelayTimeInSeconds + _currentBeginnerTimeBuffer,
+                    maxDelayTimeInSeconds + _currentBeginnerTimeBuffer)
+                : base.NewDelayTime();
             return calculatedDelayTime;
         }
     }
