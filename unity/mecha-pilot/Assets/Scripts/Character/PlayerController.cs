@@ -14,6 +14,7 @@ namespace Character
         public float speed = 7f;
         public float timeBetweenShotsInSeconds = 0.25f;
         public ObjectPool bulletPool;
+        public Vector2 initialMovementVector = Vector2.zero;
         private CharacterController _characterController;
         private PlayerInput _playerInput;
         private float _timeLastFired;
@@ -60,7 +61,15 @@ namespace Character
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
         }
-        private void OnEnable() => _playerInput.Enable();
+        private void OnEnable()
+        {
+            _playerInput.Enable();
+            if (initialMovementVector != Vector2.zero)
+            {
+                MoveInput = new Vector2(-initialMovementVector.x, initialMovementVector.y);
+                PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
+            }
+        }
         private void OnDisable() => _playerInput.Disable();
 
         public void HandleFireWeaponCommand(InputAction.CallbackContext context)

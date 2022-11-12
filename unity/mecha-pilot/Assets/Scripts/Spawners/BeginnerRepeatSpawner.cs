@@ -58,7 +58,6 @@ namespace Spawners
                 alreadyListening.Add(spawnee);
             }
         }
-        private void OnSpawnedGameObjectDied(GameObject deadGameObject) {}
         protected override bool ShouldSpawn()
         {
             var calculatedLimit = (int)Mathf.Floor(_currentEnemiesLimit);
