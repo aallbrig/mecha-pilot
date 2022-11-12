@@ -1400,7 +1400,7 @@ Transform:
   - {fileID: 75119529}
   - {fileID: 259446124}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &385641764
 GameObject:
@@ -2870,7 +2870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9b6e30a65cc49cf8ad2c6ad287f808a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawner: {fileID: 0}
+  spawner: {fileID: 1409960606}
   enemiesBeforeBoss: 30
   sliderUi: {fileID: 714385823}
 --- !u!114 &714385823
@@ -3096,7 +3096,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &737678007
 MonoBehaviour:
@@ -3852,6 +3852,18 @@ MonoBehaviour:
       - m_Target: {fileID: 737678005}
         m_TargetAssemblyTypeName: Gameplay.GameManager, Scripts
         m_MethodName: PlayGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1881428018}
+        m_TargetAssemblyTypeName: System.AudioManager, Scripts
+        m_MethodName: EnsureAudioListenerConfigured
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4917,7 +4929,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1155796648
 GameObject:
@@ -5399,7 +5411,7 @@ Transform:
   - {fileID: 1921077448}
   - {fileID: 2115660299}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1330075398
 GameObject:
@@ -5862,7 +5874,7 @@ Transform:
   - {fileID: 770492627}
   - {fileID: 486886313}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398275839
 GameObject:
@@ -6068,7 +6080,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1409960599
 MonoBehaviour:
@@ -6123,7 +6135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd856ab82b44da39985dc04ac285dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deActiveOnOutOfPlaySphere: 1
 --- !u!114 &1409960603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6164,12 +6175,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawneePool: {fileID: 1409960603}
-  minDelayTimeInSeconds: 0.25
-  maxDelayTimeInSeconds: 1
+  minDelayTimeInSeconds: 0.1
+  maxDelayTimeInSeconds: 0.8
   enemiesLimit: 1
   amountToAddToEnemyCountPerKill: 0.25
-  beginnerTimeBuffer: 3
-  bufferToDecreaseByPerKill: 0.2
+  beginnerTimeBuffer: 4
+  bufferToDecreaseByPerKill: 0.25
 --- !u!1 &1435882937
 GameObject:
   m_ObjectHideFlags: 0
@@ -6263,7 +6274,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: 180, z: 0}
 --- !u!114 &1435882940
 MonoBehaviour:
@@ -7551,7 +7562,7 @@ Transform:
   - {fileID: 1304760289}
   - {fileID: 262806176}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1728329762
 GameObject:
@@ -7750,7 +7761,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1780749869
 GameObject:
@@ -8608,6 +8619,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851276628}
   m_CullTransparentMesh: 1
+--- !u!1 &1881428016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881428017}
+  - component: {fileID: 1881428018}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1881428017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881428016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1881428018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881428016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630f104082eb424b9d455d028ab17825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1891900238
 GameObject:
   m_ObjectHideFlags: 0
@@ -10498,7 +10553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 837836837547629701, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 837836837547629701, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10547,6 +10602,10 @@ PrefabInstance:
     - target: {fileID: 837836837547629702, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009376957854977561, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8674640186012286865, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_Enabled

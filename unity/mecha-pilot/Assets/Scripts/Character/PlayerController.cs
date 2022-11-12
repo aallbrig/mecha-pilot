@@ -9,10 +9,9 @@ namespace Character
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(ObjectPool))]
-    public class PlayerController : MonoBehaviour, ICanDie, IProcessMovement, IProcessFireWeaponCommand
+    public class PlayerController : MonoBehaviour, IProcessMovement, IProcessFireWeaponCommand
     {
         public float speed = 7f;
-        public GameObject bulletPrefab;
         public float timeBetweenShotsInSeconds = 0.25f;
         public ObjectPool bulletPool;
         private CharacterController _characterController;
@@ -27,6 +26,8 @@ namespace Character
         public Vector2 MoveInput { get; private set; }
 
         public Vector2 FireInput { get; private set; }
+
+        public float TimeOfDeath { get; }
 
         private void Awake()
         {
@@ -61,10 +62,6 @@ namespace Character
         }
         private void OnEnable() => _playerInput.Enable();
         private void OnDisable() => _playerInput.Disable();
-
-        private void OnCollisionEnter() => Died?.Invoke(gameObject);
-
-        public event Action<GameObject> Died;
 
         public void HandleFireWeaponCommand(InputAction.CallbackContext context)
         {

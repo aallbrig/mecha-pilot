@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1589714654}
   - component: {fileID: 837836837547629700}
   - component: {fileID: 8674640186012286865}
+  - component: {fileID: 7009376957854977561}
   m_Layer: 6
   m_Name: Player Character
   m_TagString: Untagged
@@ -125,18 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  bulletPrefab: {fileID: 6620913344505356815, guid: b9f9a8fbfb3f45546b301989fafac1d0, type: 3}
   timeBetweenShotsInSeconds: 0.25
   bulletPool: {fileID: 8719977425291792671}
-  playerInput:
-    m_Name: Player Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: d3c5acb6-98ba-4fe4-a3ef-297073dd0ed4
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!114 &8674640186012286865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +249,19 @@ MonoBehaviour:
   m_DefaultActionMap: GamePlay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7009376957854977561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837836837547629702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e672bda5ca624960a094653029c68264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
 --- !u!1 &837836837611287689
 GameObject:
   m_ObjectHideFlags: 0

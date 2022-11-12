@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Combat;
 using UnityEngine;
 
 namespace Gameplay
@@ -35,8 +36,13 @@ namespace Gameplay
         public GameObject GetPoolObject()
         {
             foreach (var poolObject in _pool)
-                if (poolObject.activeSelf == false)
+                if (
+                    poolObject.TryGetComponent<ICanDie>(out var ableToDie)
+                    && Time.time - ableToDie.TimeOfDeath > 3.0f
+                    && poolObject.activeSelf == false
+                )
                     return poolObject;
+
             var newPoolObject = CreatePoolObject();
             _pool.Add(newPoolObject);
             return newPoolObject;

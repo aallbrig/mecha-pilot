@@ -38,7 +38,6 @@ namespace Combat
         }
         private void OnCollisionEnter(Collision collision)
         {
-            // deactivate on collision
             if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
             {
 

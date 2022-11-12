@@ -9,9 +9,15 @@ namespace Combat
         private float _currentHealth;
         private bool _dead;
         private void Start() => _currentHealth = maxHealth;
-        private void OnEnable() => _dead = false;
+        private void OnEnable()
+        {
+            TimeOfDeath = 0;
+            _dead = false;
+        }
 
         public void OnCollisionEnter() => Damage(maxHealth);
+
+        public float TimeOfDeath { get; private set; }
 
         public event Action<GameObject> Died;
 
@@ -25,6 +31,7 @@ namespace Combat
             if (_currentHealth <= 0)
             {
                 _dead = true;
+                TimeOfDeath = Time.time;
                 Died?.Invoke(gameObject);
             }
         }
