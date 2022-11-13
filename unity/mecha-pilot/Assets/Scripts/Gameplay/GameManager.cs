@@ -17,7 +17,7 @@ namespace Gameplay
     public class GameManager : MonoBehaviour, IInitializePlay
     {
         public GameObject player;
-        public float enoughTimeHasPassed = 2f;
+        public float secondsBeforeTransitionToGameOver = 2f;
         public Button playButton;
         public Button resetButton;
         public GameState startingGameState = GameState.Menu;
@@ -30,6 +30,7 @@ namespace Gameplay
         private void Awake() => GameManagerStateEntered += gameState => currentState = gameState;
         private void Start()
         {
+            _fsm = GetFiniteStateMachineDefinition().Build();
             if (playButton) playButton.onClick.AddListener(PlayGame);
             if (resetButton) resetButton.onClick.AddListener(() => _resetButtonClicked = true);
             if (player && player.TryGetComponent<ICanDie>(out var ableToDie))
@@ -39,11 +40,8 @@ namespace Gameplay
                     _gameOverTime = Time.time;
                 };
         }
-        private void Update()
-        {
-            if (_fsm == null) _fsm = GetFiniteStateMachineDefinition().Build();
-            _fsm.Tick();
-        }
+        private void Update() => _fsm.Tick();
+        private void OnValidate() => _fsm = GetFiniteStateMachineDefinition().Build();
 
         public void PlayGame() => _playerWantsToPlayGame = true;
         private FsmBuilder GetFiniteStateMachineDefinition() => new FsmBuilder()
@@ -102,7 +100,7 @@ namespace Gameplay
                     .SetTransition(nameof(GameState.GameOver), GameState.GameOver)
                     .Update(action =>
                     {
-                        if (_gameOver && Time.time - _gameOverTime > enoughTimeHasPassed)
+                        if (_gameOver && Time.time - _gameOverTime > secondsBeforeTransitionToGameOver)
                             action.Transition(nameof(GameState.GameOver));
                     });
             });
