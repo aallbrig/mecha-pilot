@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 namespace Gameplay
 {
+    [ExecuteInEditMode]
     public class OnGameManagerTransition : MonoBehaviour
     {
         public GameManager gameManager;
@@ -14,6 +15,7 @@ namespace Gameplay
         public List<UnityEvent> onGamePlayExit;
         public List<UnityEvent> onMenuEnter;
         public List<UnityEvent> onMenuExit;
+        private GameState _currentGameState;
         private void Awake()
         {
             gameManager ??= GetComponent<GameManager>();
@@ -24,10 +26,26 @@ namespace Gameplay
                 throw new NullReferenceException("Game manager required");
             }
         }
-        private void Start()
+        # if UNITY_EDITOR
+        private void Update()
+        {
+            if (_currentGameState != gameManager.currentState)
+            {
+                if (_currentGameState != null) HandleGameManagerStateExited(_currentGameState);
+                _currentGameState = gameManager.currentState;
+                HandleGameManagerStateEntered(_currentGameState);
+            }
+        }
+        #endif
+        private void OnEnable()
         {
             gameManager.GameManagerStateEntered += HandleGameManagerStateEntered;
             gameManager.GameManagerStateExited += HandleGameManagerStateExited;
+        }
+        private void OnDisable()
+        {
+            gameManager.GameManagerStateEntered -= HandleGameManagerStateEntered;
+            gameManager.GameManagerStateExited -= HandleGameManagerStateExited;
         }
         private void HandleGameManagerStateExited(GameState state)
         {

@@ -13,6 +13,7 @@ namespace Gameplay
         GameOver
     }
 
+    [ExecuteInEditMode]
     public class GameManager : MonoBehaviour, IInitializePlay
     {
         public GameObject player;
@@ -20,12 +21,13 @@ namespace Gameplay
         public Button playButton;
         public Button resetButton;
         public GameState startingGameState = GameState.Menu;
-        private GameState _currentState;
+        public GameState currentState;
         private IFsm _fsm;
         private bool _gameOver;
         private float _gameOverTime;
         private bool _playerWantsToPlayGame;
         private bool _resetButtonClicked;
+        private void Awake() => GameManagerStateEntered += gameState => currentState = gameState;
         private void Start()
         {
             if (playButton) playButton.onClick.AddListener(PlayGame);
@@ -36,11 +38,12 @@ namespace Gameplay
                     _gameOver = true;
                     _gameOverTime = Time.time;
                 };
-
-            _fsm = GetFiniteStateMachineDefinition().Build();
         }
-        private void Update() => _fsm.Tick();
-        private void OnValidate() => _fsm = GetFiniteStateMachineDefinition().Build();
+        private void Update()
+        {
+            if (_fsm == null) _fsm = GetFiniteStateMachineDefinition().Build();
+            _fsm.Tick();
+        }
 
         public void PlayGame() => _playerWantsToPlayGame = true;
         private FsmBuilder GetFiniteStateMachineDefinition() => new FsmBuilder()

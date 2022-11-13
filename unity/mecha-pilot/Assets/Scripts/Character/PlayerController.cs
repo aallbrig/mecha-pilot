@@ -28,10 +28,9 @@ namespace Character
 
         public Vector2 FireInput { get; private set; }
 
-        public float TimeOfDeath { get; }
-
         private void Awake()
         {
+            _transform = transform;
             _playerInput = new PlayerInput();
             _playerInput.GamePlay.Move.started += HandleMovement;
             _playerInput.GamePlay.Move.performed += HandleMovement;
@@ -41,10 +40,13 @@ namespace Character
             _playerInput.GamePlay.Fire.canceled += HandleFireWeaponCommand;
         }
 
+        public void Reset()
+        {
+            if (_transform) _transform.position = Vector3.zero;
+        }
+
         private void Start()
         {
-            _transform = transform;
-            _timeLastFired = Time.time - timeBetweenShotsInSeconds;
             _characterController = GetComponent<CharacterController>();
             bulletPool ??= GetComponent<ObjectPool>();
             if (bulletPool == null)
@@ -64,6 +66,7 @@ namespace Character
         private void OnEnable()
         {
             _playerInput.Enable();
+            _timeLastFired = Time.time - timeBetweenShotsInSeconds;
             if (initialMovementVector != Vector2.zero)
             {
                 MoveInput = new Vector2(-initialMovementVector.x, initialMovementVector.y);

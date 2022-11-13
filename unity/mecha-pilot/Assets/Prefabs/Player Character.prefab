@@ -23,7 +23,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &837836837547629701
 Transform:
   m_ObjectHideFlags: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   speed: 10
   timeBetweenShotsInSeconds: 0.25
   bulletPool: {fileID: 8719977425291792671}
+  initialMovementVector: {x: 0, y: 0.5}
 --- !u!114 &8674640186012286865
 MonoBehaviour:
   m_ObjectHideFlags: 0
