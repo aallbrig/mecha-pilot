@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    [Serializable]
     public enum GameState
     {
         Menu,

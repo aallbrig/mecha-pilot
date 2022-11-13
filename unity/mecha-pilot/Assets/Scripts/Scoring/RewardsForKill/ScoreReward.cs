@@ -1,20 +1,19 @@
 using System;
 using Combat;
-using Gameplay;
 using UnityEngine;
 
-namespace Economy.RewardsForKill
+namespace Scoring.RewardsForKill
 {
     public class ScoreReward : MonoBehaviour
     {
         public int scoreReward;
         private ICanDie _ableToDie;
-        private ScoreKeeper _scoreKeeper;
+        private ScoreManager _scoreManager;
         private void Start()
         {
-            _scoreKeeper ??= FindObjectOfType<ScoreKeeper>(true);
+            _scoreManager ??= FindObjectOfType<ScoreManager>(true);
             // ScoreReward deactivates self if it can't find a score keeper in the scene
-            if (_scoreKeeper == null)
+            if (_scoreManager == null)
             {
                 enabled = false;
                 throw new NullReferenceException("score keeper is required");
@@ -27,6 +26,6 @@ namespace Economy.RewardsForKill
             }
             _ableToDie.Died += RewardScoreOnDeath;
         }
-        private void RewardScoreOnDeath(GameObject obj) => _scoreKeeper.AddToCurrentScore(scoreReward);
+        private void RewardScoreOnDeath(GameObject deadGameObject) => _scoreManager.AddToCurrentScore(scoreReward);
     }
 }
