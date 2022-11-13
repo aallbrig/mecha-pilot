@@ -2,15 +2,16 @@ using System;
 using CleverCrow.Fluid.FSMs;
 using Combat;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Gameplay
 {
+    [Serializable]
     public enum GameState
     {
         Menu,
         GamePlay,
-        GameOver
+        GameOver,
+        ScoreBoard
     }
 
     [ExecuteInEditMode]
@@ -18,21 +19,15 @@ namespace Gameplay
     {
         public GameObject player;
         public float secondsBeforeTransitionToGameOver = 2f;
-        public Button playButton;
-        public Button resetButton;
         public GameState startingGameState = GameState.Menu;
         public GameState currentState;
         private IFsm _fsm;
         private bool _gameOver;
         private float _gameOverTime;
-        private bool _playerWantsToPlayGame;
-        private bool _resetButtonClicked;
         private void Awake() => GameManagerStateEntered += gameState => currentState = gameState;
         private void Start()
         {
             _fsm = GetFiniteStateMachineDefinition().Build();
-            if (playButton) playButton.onClick.AddListener(PlayGame);
-            if (resetButton) resetButton.onClick.AddListener(() => _resetButtonClicked = true);
             if (player && player.TryGetComponent<ICanDie>(out var ableToDie))
                 ableToDie.Died += _ =>
                 {
@@ -42,8 +37,12 @@ namespace Gameplay
         }
         private void Update() => _fsm.Tick();
         private void OnValidate() => _fsm = GetFiniteStateMachineDefinition().Build();
+        public void PlayGame() => SetState(GameState.GamePlay);
 
-        public void PlayGame() => _playerWantsToPlayGame = true;
+        public void Menu() => SetState(GameState.Menu);
+        public void ScoreBoard() => SetState(GameState.ScoreBoard);
+        public void GameOver() => SetState(GameState.GameOver);
+        private void SetState(GameState state) => _fsm.SetState(state);
         private FsmBuilder GetFiniteStateMachineDefinition() => new FsmBuilder()
             .Owner(gameObject)
             .Default(startingGameState)
@@ -52,7 +51,6 @@ namespace Gameplay
                 builder
                     .Enter(_ =>
                     {
-                        _playerWantsToPlayGame = false;
                         GameManagerStateEntered?.Invoke(GameState.Menu);
                     })
                     .SetTransition(nameof(GameState.GamePlay), GameState.GamePlay)
@@ -60,10 +58,7 @@ namespace Gameplay
                     {
                         GameManagerStateExited?.Invoke(GameState.Menu);
                     })
-                    .Update(action =>
-                    {
-                        if (_playerWantsToPlayGame) action.Transition(nameof(GameState.GamePlay));
-                    });
+                    .Update(action => {});
 
             })
             .State(GameState.GameOver, builder =>
@@ -71,7 +66,6 @@ namespace Gameplay
                 builder
                     .Enter(_ =>
                     {
-                        _resetButtonClicked = false;
                         GameManagerStateEntered?.Invoke(GameState.GameOver);
                     })
                     .Exit(_ =>
@@ -80,10 +74,7 @@ namespace Gameplay
                         GameIsOver?.Invoke();
                     })
                     .SetTransition(nameof(GameState.Menu), GameState.Menu)
-                    .Update(action =>
-                    {
-                        if (_resetButtonClicked) action.Transition(nameof(GameState.Menu));
-                    });
+                    .Update(action => {});
             })
             .State(GameState.GamePlay, builder =>
             {
@@ -102,6 +93,18 @@ namespace Gameplay
                     {
                         if (_gameOver && Time.time - _gameOverTime > secondsBeforeTransitionToGameOver)
                             action.Transition(nameof(GameState.GameOver));
+                    });
+            })
+            .State(GameState.ScoreBoard, builder =>
+            {
+                builder
+                    .Enter(_ =>
+                    {
+                        GameManagerStateEntered?.Invoke(GameState.ScoreBoard);
+                    })
+                    .Exit(_ =>
+                    {
+                        GameManagerStateExited?.Invoke(GameState.ScoreBoard);
                     });
             });
 

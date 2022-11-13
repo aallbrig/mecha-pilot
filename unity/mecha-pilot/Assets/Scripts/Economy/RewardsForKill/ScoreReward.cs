@@ -12,7 +12,7 @@ namespace Economy.RewardsForKill
         private ScoreKeeper _scoreKeeper;
         private void Start()
         {
-            _scoreKeeper ??= FindObjectOfType<ScoreKeeper>();
+            _scoreKeeper ??= FindObjectOfType<ScoreKeeper>(true);
             // ScoreReward deactivates self if it can't find a score keeper in the scene
             if (_scoreKeeper == null)
             {
