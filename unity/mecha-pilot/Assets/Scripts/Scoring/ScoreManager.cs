@@ -8,12 +8,22 @@ namespace Scoring
     {
         public ScoreRecord currentScore;
         public List<ScoreRecord> scores;
-        public void Reset() => currentScore = new ScoreRecord
+        public void Reset()
         {
-            playDate = DateTime.Today,
-            playTime = 0,
-            score = 0
-        };
+            currentScore = new ScoreRecord
+            {
+                playDate = DateTime.Today,
+                playTime = 0,
+                score = 0
+            };
+            var result = new ScoreAddedResult
+            {
+                PreviousScore = currentScore.score,
+                UpdatedScore = currentScore.score,
+                ScoreIncrease = 0
+            };
+            ScoreAdded?.Invoke(result);
+        }
 
         private void OnEnable() => Reset();
         private void OnDisable() {}
