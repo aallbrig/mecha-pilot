@@ -18,6 +18,9 @@ namespace Backgrounds
             _transform = transform;
             _colliderBounds = boundingCollider.bounds;
         }
+        private void OnBecameInvisible() => Debug.Log($"{name} became invisible");
+        private void OnBecameVisible() => Debug.Log($"{name} became visible");
+        private void OnWillRenderObject() => Debug.Log($"{name} will render object");
         public bool ContainerInDirection(Vector3 direction)
         {
             var containerTransform = _transform ? _transform : transform;
