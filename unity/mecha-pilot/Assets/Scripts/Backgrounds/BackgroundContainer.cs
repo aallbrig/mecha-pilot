@@ -26,14 +26,12 @@ namespace Backgrounds
             var containerTransform = _transform ? _transform : transform;
             var theReturn = false;
             var transformDirection = containerTransform.TransformDirection(direction);
-            boundingCollider.enabled = false;
-            var rayLength = boundingCollider.size.magnitude;
+            var rayLength = boundingCollider.size.magnitude * 2;
             if (Physics.Raycast(containerTransform.position, transformDirection, out var hit,
-                    rayLength))
+                    rayLength, LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer))))
                 if (hit.transform != containerTransform &&
                     hit.transform.TryGetComponent<BackgroundContainer>(out var container))
                     theReturn = true;
-            boundingCollider.enabled = true;
             return theReturn;
         }
     }

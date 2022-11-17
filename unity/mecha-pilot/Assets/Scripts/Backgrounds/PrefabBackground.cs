@@ -9,7 +9,10 @@ namespace Backgrounds
         public GameObject prefab;
         public Vector3 containerSize;
         public int numberOfPrefabInstances = 5;
-        public List<Transform> backgroundContainers = new();
+        public float secondsUntilBackgroundRefresh = 2f;
+        [SerializeField] private int backgroundContainerCount;
+        public List<Transform> allBackgroundContainers = new();
+        public List<Transform> activeBackgroundContainers = new();
         private readonly Queue<Transform> _backgroundGeneratorQueue = new();
 
         private readonly List<Vector3> _directions = new()
@@ -18,6 +21,8 @@ namespace Backgrounds
         };
 
         private readonly int _limit = 25;
+        private Plane[] _frustumPlanes;
+        private float _timeOfLastBackgroundRefresh;
 
         private Transform _transform;
         public void Reset()
@@ -28,10 +33,40 @@ namespace Backgrounds
                     DestroyImmediate(child.gameObject);
                 else
                     Destroy(child.gameObject);
-            backgroundContainers.Clear();
+            allBackgroundContainers.Clear();
+            activeBackgroundContainers.Clear();
+        }
+        private void Update()
+        {
+            if (Time.time - _timeOfLastBackgroundRefresh > secondsUntilBackgroundRefresh)
+            {
+                var frustumPlanes = CalculateFrustumPlanes();
+                activeBackgroundContainers.Clear();
+                allBackgroundContainers.ForEach(container =>
+                {
+                    if (IsSeenByCamera(container.gameObject, frustumPlanes)) activeBackgroundContainers.Add(container);
+                });
+                activeBackgroundContainers.ForEach(container =>
+                {
+                    var containerComponent = container.GetComponent<BackgroundContainer>();
+                    _directions.ForEach(direction =>
+                    {
+                        if (!containerComponent.ContainerInDirection(direction))
+                        {
+                            var newContainerPosition =
+                                container.position + new Vector3(containerSize.x * direction.x, containerSize.y * direction.y,
+                                    0);
+                            newContainerPosition.z = 0;
+                            var newContainer = NewBackgroundContainer($"{backgroundContainerCount++}", newContainerPosition);
+                        }
+                    });
+                });
+                _timeOfLastBackgroundRefresh = Time.time;
+            }
         }
         private void OnEnable()
         {
+            _timeOfLastBackgroundRefresh = Time.time - secondsUntilBackgroundRefresh;
             perspectiveCamera ??= Camera.current;
             perspectiveCamera ??= Camera.main;
             if (perspectiveCamera == null)
@@ -48,14 +83,16 @@ namespace Backgrounds
             _transform = transform;
         }
 
-        public void PopulateBackgroundContainers() => backgroundContainers.ForEach(PopulateBackgroundContainer);
+        public Plane[] CalculateFrustumPlanes() => GeometryUtility.CalculateFrustumPlanes(perspectiveCamera);
+
         private void PopulateBackgroundContainer(Transform backgroundContainer)
         {
-            if (prefab == null) return;
+            if (prefab == null || backgroundContainer == null) return;
 
             var backgroundTransform = _transform ? _transform : transform;
             var containerCollider = backgroundContainer.GetComponent<Collider>();
             var bounds = containerCollider.bounds;
+
             for (var i = 0; i < numberOfPrefabInstances; i++)
             {
                 var randomX = Random.Range(bounds.min.x, bounds.max.x);
@@ -69,12 +106,14 @@ namespace Backgrounds
         {
             Reset();
 
-            var i = 0;
+            backgroundContainerCount = 0;
 
-            var startingContainer = NewBackgroundContainer($"{i++}", Vector3.zero);
+            var startingContainer = NewBackgroundContainer($"{backgroundContainerCount++}", Vector3.zero);
+            activeBackgroundContainers.Add(startingContainer.transform);
             _backgroundGeneratorQueue.Clear();
             _backgroundGeneratorQueue.Enqueue(startingContainer);
 
+            var frustumPlanes = CalculateFrustumPlanes();
             while (_backgroundGeneratorQueue.Count > 0)
             {
                 var container = _backgroundGeneratorQueue.Dequeue();
@@ -87,11 +126,15 @@ namespace Backgrounds
                         var containerPosition =
                             container.position + new Vector3(containerSize.x * direction.x, containerSize.y * direction.y, 0);
                         containerPosition.z = 0;
-                        var newContainer = NewBackgroundContainer($"{i++}", containerPosition);
-                        if (IsSeenByCamera(newContainer.gameObject)) _backgroundGeneratorQueue.Enqueue(newContainer);
+                        var newContainer = NewBackgroundContainer($"{backgroundContainerCount++}", containerPosition);
+                        if (IsSeenByCamera(newContainer.gameObject, frustumPlanes))
+                        {
+                            activeBackgroundContainers.Add(newContainer.transform);
+                            _backgroundGeneratorQueue.Enqueue(newContainer);
+                        }
                     }
                 });
-                if (i > _limit) break;
+                if (backgroundContainerCount > _limit) break;
             }
         }
         private Transform NewBackgroundContainer(string containerName, Vector3 position)
@@ -110,14 +153,14 @@ namespace Backgrounds
             colliderComponent.size = containerSize;
             var backgroundContainerComponent = container.AddComponent<BackgroundContainer>();
             backgroundContainerComponent.boundingCollider = colliderComponent;
-            backgroundContainers.Add(container.transform);
+            allBackgroundContainers.Add(container.transform);
+            PopulateBackgroundContainer(container.transform);
             return container.transform;
         }
-        public bool IsSeenByCamera(GameObject newBackgroundContainer)
+        public bool IsSeenByCamera(GameObject newBackgroundContainer, Plane[] frustumPlanes)
         {
             // is this box outside the camera frustum
             var containerCollider = newBackgroundContainer.GetComponent<Collider>();
-            var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(perspectiveCamera);
             return GeometryUtility.TestPlanesAABB(frustumPlanes, containerCollider.bounds);
         }
     }
