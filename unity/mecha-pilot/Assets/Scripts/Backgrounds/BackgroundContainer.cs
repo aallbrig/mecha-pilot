@@ -5,7 +5,6 @@ namespace Backgrounds
     public class BackgroundContainer : MonoBehaviour
     {
         public BoxCollider boundingCollider;
-        private Bounds _colliderBounds;
         private Transform _transform;
         private void OnEnable()
         {
@@ -16,7 +15,6 @@ namespace Backgrounds
                 return;
             }
             _transform = transform;
-            _colliderBounds = boundingCollider.bounds;
         }
         private void OnBecameInvisible() => Debug.Log($"{name} became invisible");
         private void OnBecameVisible() => Debug.Log($"{name} became visible");

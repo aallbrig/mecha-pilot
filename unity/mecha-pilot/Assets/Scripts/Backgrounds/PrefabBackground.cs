@@ -10,17 +10,15 @@ namespace Backgrounds
         public Vector3 containerSize;
         public int numberOfPrefabInstances = 5;
         public float secondsUntilBackgroundRefresh = 2f;
-        [SerializeField] private int backgroundContainerCount;
+        [SerializeField] public int backgroundContainerCount;
         public List<Transform> allBackgroundContainers = new();
         public List<Transform> activeBackgroundContainers = new();
-        private readonly Queue<Transform> _backgroundGeneratorQueue = new();
 
-        private readonly List<Vector3> _directions = new()
+        public List<Vector3> Directions = new()
         {
             Vector3.up, Vector3.right, Vector3.down, Vector3.left
         };
 
-        private readonly int _limit = 25;
         private Plane[] _frustumPlanes;
         private float _timeOfLastBackgroundRefresh;
 
@@ -35,6 +33,7 @@ namespace Backgrounds
                     Destroy(child.gameObject);
             allBackgroundContainers.Clear();
             activeBackgroundContainers.Clear();
+            backgroundContainerCount = 0;
         }
         private void Update()
         {
@@ -49,7 +48,7 @@ namespace Backgrounds
                 activeBackgroundContainers.ForEach(container =>
                 {
                     var containerComponent = container.GetComponent<BackgroundContainer>();
-                    _directions.ForEach(direction =>
+                    Directions.ForEach(direction =>
                     {
                         if (!containerComponent.ContainerInDirection(direction))
                         {
@@ -102,42 +101,7 @@ namespace Backgrounds
                 prefabInstance.transform.position = randomPointInside;
             }
         }
-        public void CreateBackgroundContainers()
-        {
-            Reset();
-
-            backgroundContainerCount = 0;
-
-            var startingContainer = NewBackgroundContainer($"{backgroundContainerCount++}", Vector3.zero);
-            activeBackgroundContainers.Add(startingContainer.transform);
-            _backgroundGeneratorQueue.Clear();
-            _backgroundGeneratorQueue.Enqueue(startingContainer);
-
-            var frustumPlanes = CalculateFrustumPlanes();
-            while (_backgroundGeneratorQueue.Count > 0)
-            {
-                var container = _backgroundGeneratorQueue.Dequeue();
-                var containerComponent = container.GetComponent<BackgroundContainer>();
-
-                _directions.ForEach(direction =>
-                {
-                    if (!containerComponent.ContainerInDirection(direction))
-                    {
-                        var containerPosition =
-                            container.position + new Vector3(containerSize.x * direction.x, containerSize.y * direction.y, 0);
-                        containerPosition.z = 0;
-                        var newContainer = NewBackgroundContainer($"{backgroundContainerCount++}", containerPosition);
-                        if (IsSeenByCamera(newContainer.gameObject, frustumPlanes))
-                        {
-                            activeBackgroundContainers.Add(newContainer.transform);
-                            _backgroundGeneratorQueue.Enqueue(newContainer);
-                        }
-                    }
-                });
-                if (backgroundContainerCount > _limit) break;
-            }
-        }
-        private Transform NewBackgroundContainer(string containerName, Vector3 position)
+        public Transform NewBackgroundContainer(string containerName, Vector3 position)
         {
             var backgroundTransform = _transform ? _transform : transform;
             var container = new GameObject
