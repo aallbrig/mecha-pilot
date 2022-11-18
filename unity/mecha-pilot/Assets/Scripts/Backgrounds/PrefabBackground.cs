@@ -11,10 +11,10 @@ namespace Backgrounds
         public int numberOfPrefabInstances = 5;
         public float secondsUntilBackgroundRefresh = 2f;
         [SerializeField] public int backgroundContainerCount;
-        public List<Transform> allBackgroundContainers = new();
-        public List<Transform> activeBackgroundContainers = new();
+        public List<BackgroundContainer> allBackgroundContainers = new();
+        public List<BackgroundContainer> activeBackgroundContainers = new();
 
-        public List<Vector3> Directions = new()
+        public List<Vector3> directions = new()
         {
             Vector3.up, Vector3.right, Vector3.down, Vector3.left
         };
@@ -48,12 +48,13 @@ namespace Backgrounds
                 activeBackgroundContainers.ForEach(container =>
                 {
                     var containerComponent = container.GetComponent<BackgroundContainer>();
-                    Directions.ForEach(direction =>
+                    directions.ForEach(direction =>
                     {
                         if (!containerComponent.ContainerInDirection(direction))
                         {
                             var newContainerPosition =
-                                container.position + new Vector3(containerSize.x * direction.x, containerSize.y * direction.y,
+                                container.transform.position + new Vector3(containerSize.x * direction.x,
+                                    containerSize.y * direction.y,
                                     0);
                             newContainerPosition.z = 0;
                             var newContainer = NewBackgroundContainer($"{backgroundContainerCount++}", newContainerPosition);
@@ -101,7 +102,7 @@ namespace Backgrounds
                 prefabInstance.transform.position = randomPointInside;
             }
         }
-        public Transform NewBackgroundContainer(string containerName, Vector3 position)
+        public BackgroundContainer NewBackgroundContainer(string containerName, Vector3 position)
         {
             var backgroundTransform = _transform ? _transform : transform;
             var container = new GameObject
@@ -117,9 +118,9 @@ namespace Backgrounds
             colliderComponent.size = containerSize;
             var backgroundContainerComponent = container.AddComponent<BackgroundContainer>();
             backgroundContainerComponent.boundingCollider = colliderComponent;
-            allBackgroundContainers.Add(container.transform);
+            allBackgroundContainers.Add(backgroundContainerComponent);
             PopulateBackgroundContainer(container.transform);
-            return container.transform;
+            return backgroundContainerComponent;
         }
         public bool IsSeenByCamera(GameObject newBackgroundContainer, Plane[] frustumPlanes)
         {

@@ -8,14 +8,13 @@ namespace Backgrounds.Editor
     [CustomEditor(typeof(PrefabBackground))]
     public class PrefabBackgroundEditor : UnityEditor.Editor
     {
-        private readonly Queue<Transform> _backgroundGeneratorQueue = new();
-        private readonly int _limit = 25;
+        private readonly Queue<BackgroundContainer> _backgroundGeneratorQueue = new();
 
         private PrefabBackground _componentInstance;
+        private int _limit = 25;
         private void OnEnable() => _componentInstance = (PrefabBackground)target;
         private void OnSceneGUI()
         {
-
             var frustumPlanes = _componentInstance.CalculateFrustumPlanes();
             _componentInstance.allBackgroundContainers.ForEach(backgroundContainer =>
             {
@@ -24,13 +23,14 @@ namespace Backgrounds.Editor
                 Handles.color = _componentInstance.IsSeenByCamera(backgroundContainer.gameObject, frustumPlanes)
                     ? Color.green
                     : Color.magenta;
-                var backgroundContainerPosition = backgroundContainer.position;
+                var backgroundContainerPosition = backgroundContainer.transform.position;
                 Handles.DrawWireCube(backgroundContainerPosition, _componentInstance.containerSize);
                 Handles.Label(backgroundContainerPosition, backgroundContainer.name);
             });
         }
         public override void OnInspectorGUI()
         {
+            _limit = EditorGUILayout.IntField("Max generated containers", _limit);
             if (GUILayout.Button("Draw background containers"))
                 CreateBackgroundContainers();
             if (GUILayout.Button("Reset"))
@@ -42,7 +42,7 @@ namespace Backgrounds.Editor
         {
             var startingContainer =
                 _componentInstance.NewBackgroundContainer($"{_componentInstance.backgroundContainerCount++}", Vector3.zero);
-            _componentInstance.activeBackgroundContainers.Add(startingContainer.transform);
+            _componentInstance.activeBackgroundContainers.Add(startingContainer);
             _backgroundGeneratorQueue.Clear();
             _backgroundGeneratorQueue.Enqueue(startingContainer);
 
@@ -52,12 +52,12 @@ namespace Backgrounds.Editor
                 var container = _backgroundGeneratorQueue.Dequeue();
                 var containerComponent = container.GetComponent<BackgroundContainer>();
 
-                _componentInstance.Directions.ForEach(direction =>
+                _componentInstance.directions.ForEach(direction =>
                 {
                     if (!containerComponent.ContainerInDirection(direction))
                     {
                         var containerPosition =
-                            container.position + new Vector3(_componentInstance.containerSize.x * direction.x,
+                            container.transform.position + new Vector3(_componentInstance.containerSize.x * direction.x,
                                 _componentInstance.containerSize.y * direction.y, 0);
                         containerPosition.z = 0;
                         var newContainer =
@@ -65,7 +65,7 @@ namespace Backgrounds.Editor
                                 containerPosition);
                         if (_componentInstance.IsSeenByCamera(newContainer.gameObject, frustumPlanes))
                         {
-                            _componentInstance.activeBackgroundContainers.Add(newContainer.transform);
+                            _componentInstance.activeBackgroundContainers.Add(newContainer);
                             _backgroundGeneratorQueue.Enqueue(newContainer);
                         }
                     }
