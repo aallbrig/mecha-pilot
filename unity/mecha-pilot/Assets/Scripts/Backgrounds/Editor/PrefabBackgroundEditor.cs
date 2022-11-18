@@ -41,7 +41,11 @@ namespace Backgrounds.Editor
         private void CreateBackgroundContainers()
         {
             var startingContainer =
-                _componentInstance.NewBackgroundContainer($"{_componentInstance.backgroundContainerCount++}", Vector3.zero);
+                _componentInstance.NewBackgroundContainer(new MissingBackgroundContainerReport
+                {
+                    ExpectedCoordinates = Vector3Int.zero,
+                    ExpectedLocation = _componentInstance.transform.position
+                });
             _componentInstance.activeBackgroundContainers.Add(startingContainer);
             _backgroundGeneratorQueue.Clear();
             _backgroundGeneratorQueue.Enqueue(startingContainer);
@@ -51,25 +55,20 @@ namespace Backgrounds.Editor
             {
                 var container = _backgroundGeneratorQueue.Dequeue();
                 var containerComponent = container.GetComponent<BackgroundContainer>();
-
-                _componentInstance.directions.ForEach(direction =>
-                {
-                    if (!containerComponent.ContainerInDirection(direction))
+                var missingContainerReports = containerComponent.AuditMissingContainers();
+                if (missingContainerReports.Length > 0)
+                    foreach (var missingContainerReport in missingContainerReports)
                     {
-                        var containerPosition =
-                            container.transform.position + new Vector3(_componentInstance.containerSize.x * direction.x,
-                                _componentInstance.containerSize.y * direction.y, 0);
-                        containerPosition.z = 0;
-                        var newContainer =
-                            _componentInstance.NewBackgroundContainer($"{_componentInstance.backgroundContainerCount++}",
-                                containerPosition);
+                        var newContainer = _componentInstance.NewBackgroundContainer(missingContainerReport);
+                        containerComponent.RegisterContainer(missingContainerReport.RelativeDirection, newContainer);
+
                         if (_componentInstance.IsSeenByCamera(newContainer.gameObject, frustumPlanes))
                         {
                             _componentInstance.activeBackgroundContainers.Add(newContainer);
                             _backgroundGeneratorQueue.Enqueue(newContainer);
                         }
                     }
-                });
+
                 if (_componentInstance.backgroundContainerCount > _limit) break;
             }
         }

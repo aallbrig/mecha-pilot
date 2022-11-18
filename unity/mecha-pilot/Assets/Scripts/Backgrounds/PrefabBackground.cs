@@ -14,11 +14,6 @@ namespace Backgrounds
         public List<BackgroundContainer> allBackgroundContainers = new();
         public List<BackgroundContainer> activeBackgroundContainers = new();
 
-        public List<Vector3> directions = new()
-        {
-            Vector3.up, Vector3.right, Vector3.down, Vector3.left
-        };
-
         private Plane[] _frustumPlanes;
         private float _timeOfLastBackgroundRefresh;
 
@@ -47,19 +42,13 @@ namespace Backgrounds
                 });
                 activeBackgroundContainers.ForEach(container =>
                 {
-                    var containerComponent = container.GetComponent<BackgroundContainer>();
-                    directions.ForEach(direction =>
-                    {
-                        if (!containerComponent.ContainerInDirection(direction))
+                    var missingContainerReports = container.AuditMissingContainers();
+                    if (missingContainerReports.Length > 0)
+                        foreach (var missingContainerReport in missingContainerReports)
                         {
-                            var newContainerPosition =
-                                container.transform.position + new Vector3(containerSize.x * direction.x,
-                                    containerSize.y * direction.y,
-                                    0);
-                            newContainerPosition.z = 0;
-                            var newContainer = NewBackgroundContainer($"{backgroundContainerCount++}", newContainerPosition);
+                            var newContainer = NewBackgroundContainer(missingContainerReport);
+                            container.RegisterContainer(missingContainerReport.RelativeDirection, newContainer);
                         }
-                    });
                 });
                 _timeOfLastBackgroundRefresh = Time.time;
             }
@@ -102,26 +91,28 @@ namespace Backgrounds
                 prefabInstance.transform.position = randomPointInside;
             }
         }
-        public BackgroundContainer NewBackgroundContainer(string containerName, Vector3 position)
+        public BackgroundContainer NewBackgroundContainer(MissingBackgroundContainerReport missingReport)
         {
             var backgroundTransform = _transform ? _transform : transform;
             var container = new GameObject
             {
-                name = containerName,
+                name = $"{NewBackgroundContainerId()} {missingReport.ExpectedCoordinates}",
                 transform =
                 {
-                    position = backgroundTransform.position + position,
+                    position = missingReport.ExpectedLocation,
                     parent = backgroundTransform
                 }
             };
             var colliderComponent = container.AddComponent<BoxCollider>();
             colliderComponent.size = containerSize;
             var backgroundContainerComponent = container.AddComponent<BackgroundContainer>();
+            backgroundContainerComponent.coordinates = missingReport.ExpectedCoordinates;
             backgroundContainerComponent.boundingCollider = colliderComponent;
             allBackgroundContainers.Add(backgroundContainerComponent);
             PopulateBackgroundContainer(container.transform);
             return backgroundContainerComponent;
         }
+        private int NewBackgroundContainerId() => backgroundContainerCount++;
         public bool IsSeenByCamera(GameObject newBackgroundContainer, Plane[] frustumPlanes)
         {
             // is this box outside the camera frustum
