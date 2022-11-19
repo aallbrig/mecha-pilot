@@ -13,19 +13,27 @@ namespace Backgrounds
         [SerializeField] public int backgroundContainerCount;
         public List<BackgroundContainer> allBackgroundContainers = new();
         public List<BackgroundContainer> activeBackgroundContainers = new();
+        private readonly Queue<BackgroundContainer> _backgroundGeneratorQueue = new();
+        private readonly int _limit = 25;
 
         private Plane[] _frustumPlanes;
         private float _timeOfLastBackgroundRefresh;
 
         private Transform _transform;
+        private void Awake()
+        {
+            Reset();
+            CreateBackgroundContainers();
+        }
         public void Reset()
         {
             var backgroundTransform = _transform ? _transform : transform;
-            foreach (Transform child in backgroundTransform)
-                if (Application.isEditor)
-                    DestroyImmediate(child.gameObject);
-                else
-                    Destroy(child.gameObject);
+            while (backgroundTransform.childCount > 0)
+                foreach (Transform child in backgroundTransform)
+                    if (Application.isEditor)
+                        DestroyImmediate(child.gameObject);
+                    else
+                        Destroy(child.gameObject);
             allBackgroundContainers.Clear();
             activeBackgroundContainers.Clear();
             backgroundContainerCount = 0;
@@ -73,6 +81,40 @@ namespace Backgrounds
         }
 
         public Plane[] CalculateFrustumPlanes() => GeometryUtility.CalculateFrustumPlanes(perspectiveCamera);
+        public void CreateBackgroundContainers()
+        {
+            var startingContainer =
+                NewBackgroundContainer(new MissingBackgroundContainerReport
+                {
+                    ExpectedCoordinates = Vector3Int.zero,
+                    ExpectedLocation = transform.position
+                });
+            activeBackgroundContainers.Add(startingContainer);
+            _backgroundGeneratorQueue.Clear();
+            _backgroundGeneratorQueue.Enqueue(startingContainer);
+
+            var frustumPlanes = CalculateFrustumPlanes();
+            while (_backgroundGeneratorQueue.Count > 0)
+            {
+                var container = _backgroundGeneratorQueue.Dequeue();
+                var containerComponent = container.GetComponent<BackgroundContainer>();
+                var missingContainerReports = containerComponent.AuditMissingContainers();
+                if (missingContainerReports.Length > 0)
+                    foreach (var missingContainerReport in missingContainerReports)
+                    {
+                        var newContainer = NewBackgroundContainer(missingContainerReport);
+                        containerComponent.RegisterContainer(missingContainerReport.RelativeDirection, newContainer);
+
+                        if (IsSeenByCamera(newContainer.gameObject, frustumPlanes))
+                        {
+                            activeBackgroundContainers.Add(newContainer);
+                            _backgroundGeneratorQueue.Enqueue(newContainer);
+                        }
+                    }
+
+                if (backgroundContainerCount > _limit) break;
+            }
+        }
 
         private void PopulateBackgroundContainer(Transform backgroundContainer)
         {

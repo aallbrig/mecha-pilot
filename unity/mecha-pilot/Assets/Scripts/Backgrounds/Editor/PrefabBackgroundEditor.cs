@@ -32,45 +32,10 @@ namespace Backgrounds.Editor
         {
             _limit = EditorGUILayout.IntField("Max generated containers", _limit);
             if (GUILayout.Button("Draw background containers"))
-                CreateBackgroundContainers();
+                _componentInstance.CreateBackgroundContainers();
             if (GUILayout.Button("Reset"))
                 _componentInstance.Reset();
             base.OnInspectorGUI();
-        }
-
-        private void CreateBackgroundContainers()
-        {
-            var startingContainer =
-                _componentInstance.NewBackgroundContainer(new MissingBackgroundContainerReport
-                {
-                    ExpectedCoordinates = Vector3Int.zero,
-                    ExpectedLocation = _componentInstance.transform.position
-                });
-            _componentInstance.activeBackgroundContainers.Add(startingContainer);
-            _backgroundGeneratorQueue.Clear();
-            _backgroundGeneratorQueue.Enqueue(startingContainer);
-
-            var frustumPlanes = _componentInstance.CalculateFrustumPlanes();
-            while (_backgroundGeneratorQueue.Count > 0)
-            {
-                var container = _backgroundGeneratorQueue.Dequeue();
-                var containerComponent = container.GetComponent<BackgroundContainer>();
-                var missingContainerReports = containerComponent.AuditMissingContainers();
-                if (missingContainerReports.Length > 0)
-                    foreach (var missingContainerReport in missingContainerReports)
-                    {
-                        var newContainer = _componentInstance.NewBackgroundContainer(missingContainerReport);
-                        containerComponent.RegisterContainer(missingContainerReport.RelativeDirection, newContainer);
-
-                        if (_componentInstance.IsSeenByCamera(newContainer.gameObject, frustumPlanes))
-                        {
-                            _componentInstance.activeBackgroundContainers.Add(newContainer);
-                            _backgroundGeneratorQueue.Enqueue(newContainer);
-                        }
-                    }
-
-                if (_componentInstance.backgroundContainerCount > _limit) break;
-            }
         }
     }
 }
