@@ -22,6 +22,7 @@ namespace Backgrounds
             Vector3Int.up, Vector3Int.right, Vector3Int.down, Vector3Int.left
         };
 
+        public LayerMask backgroundLayerMask;
         public BoxCollider boundingCollider;
         public Vector3Int coordinates;
 
@@ -37,6 +38,7 @@ namespace Backgrounds
                 return;
             }
             _transform = transform;
+            IdentifyNearbyContainers(backgroundLayerMask != default ? backgroundLayerMask : 1 << gameObject.layer);
         }
         private void OnBecameInvisible() => Debug.Log($"{name} became invisible");
         private void OnBecameVisible() => Debug.Log($"{name} became visible");
@@ -79,5 +81,21 @@ namespace Backgrounds
                     theReturn = true;
             return theReturn;
         }
+        private void IdentifyNearbyContainers(LayerMask layerMask)
+        {
+            var halfExtends = boundingCollider.size;
+            var nearbyContainers = new List<BackgroundContainer>();
+            foreach (var hitCollider in Physics.OverlapBox(_transform.position, halfExtends, Quaternion.identity, layerMask))
+                if (hitCollider.gameObject.TryGetComponent<BackgroundContainer>(out var backgroundContainer))
+                    nearbyContainers.Add(backgroundContainer);
+            nearbyContainers.ForEach(nearbyContainer =>
+            {
+                var normalizedDirection = Vector3.Normalize(nearbyContainer.transform.position - _transform.position);
+                var normalizedDirectionInt = Vector3Int.RoundToInt(normalizedDirection);
+                if (Array.Exists(Directions, direction => direction == normalizedDirectionInt))
+                    RegisterContainer(normalizedDirectionInt, nearbyContainer);
+            });
+        }
     }
+
 }

@@ -10,21 +10,18 @@ namespace Backgrounds
         public Vector3 containerSize;
         public int numberOfPrefabInstances = 5;
         public float secondsUntilBackgroundRefresh = 2f;
+        public LayerMask backgroundLayerMask;
         [SerializeField] public int backgroundContainerCount;
         public List<BackgroundContainer> allBackgroundContainers = new();
         public List<BackgroundContainer> activeBackgroundContainers = new();
-        private readonly Queue<BackgroundContainer> _backgroundGeneratorQueue = new();
-        private readonly int _limit = 25;
 
         private Plane[] _frustumPlanes;
         private float _timeOfLastBackgroundRefresh;
 
         private Transform _transform;
-        private void Awake()
-        {
-            Reset();
-            CreateBackgroundContainers();
-        }
+
+        public int ContainerCount => backgroundContainerCount;
+
         public void Reset()
         {
             var backgroundTransform = _transform ? _transform : transform;
@@ -81,41 +78,6 @@ namespace Backgrounds
         }
 
         public Plane[] CalculateFrustumPlanes() => GeometryUtility.CalculateFrustumPlanes(perspectiveCamera);
-        public void CreateBackgroundContainers()
-        {
-            var startingContainer =
-                NewBackgroundContainer(new MissingBackgroundContainerReport
-                {
-                    ExpectedCoordinates = Vector3Int.zero,
-                    ExpectedLocation = transform.position
-                });
-            activeBackgroundContainers.Add(startingContainer);
-            _backgroundGeneratorQueue.Clear();
-            _backgroundGeneratorQueue.Enqueue(startingContainer);
-
-            var frustumPlanes = CalculateFrustumPlanes();
-            while (_backgroundGeneratorQueue.Count > 0)
-            {
-                var container = _backgroundGeneratorQueue.Dequeue();
-                var containerComponent = container.GetComponent<BackgroundContainer>();
-                var missingContainerReports = containerComponent.AuditMissingContainers();
-                if (missingContainerReports.Length > 0)
-                    foreach (var missingContainerReport in missingContainerReports)
-                    {
-                        var newContainer = NewBackgroundContainer(missingContainerReport);
-                        containerComponent.RegisterContainer(missingContainerReport.RelativeDirection, newContainer);
-
-                        if (IsSeenByCamera(newContainer.gameObject, frustumPlanes))
-                        {
-                            activeBackgroundContainers.Add(newContainer);
-                            _backgroundGeneratorQueue.Enqueue(newContainer);
-                        }
-                    }
-
-                if (backgroundContainerCount > _limit) break;
-            }
-        }
-
         private void PopulateBackgroundContainer(Transform backgroundContainer)
         {
             if (prefab == null || backgroundContainer == null) return;
@@ -150,6 +112,7 @@ namespace Backgrounds
             var backgroundContainerComponent = container.AddComponent<BackgroundContainer>();
             backgroundContainerComponent.coordinates = missingReport.ExpectedCoordinates;
             backgroundContainerComponent.boundingCollider = colliderComponent;
+            backgroundContainerComponent.backgroundLayerMask = backgroundLayerMask;
             allBackgroundContainers.Add(backgroundContainerComponent);
             PopulateBackgroundContainer(container.transform);
             return backgroundContainerComponent;
