@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 837836837547629701}
   - component: {fileID: 837836837547629699}
   - component: {fileID: 1589714652}
-  - component: {fileID: 1589714653}
   - component: {fileID: 8719977425291792671}
-  - component: {fileID: 1589714654}
   - component: {fileID: 837836837547629700}
   - component: {fileID: 8674640186012286865}
   - component: {fileID: 7009376957854977561}
+  - component: {fileID: -547723752145302197}
+  - component: {fileID: 4597583280114388876}
   m_Layer: 6
   m_Name: Player Character
   m_TagString: Untagged
@@ -72,19 +72,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1589714653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837836837547629702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59ef1edf2f754c1ebac39515ec56f0a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  framesTilDeactivate: 3
 --- !u!114 &8719977425291792671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,19 +87,6 @@ MonoBehaviour:
   prefabToPool: {fileID: 6620913344505356815, guid: b9f9a8fbfb3f45546b301989fafac1d0, type: 3}
   poolCount: 30
   parentTransform: {fileID: 0}
---- !u!114 &1589714654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837836837547629702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26754394da0f407f96ea5354c8772933, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 4635019335779838631, guid: c6a99adcf823143e2a8654f9eef5a5e8, type: 3}
 --- !u!114 &837836837547629700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +237,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+--- !u!114 &-547723752145302197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837836837547629702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2d100fb56c41ad8269c2795e3e35e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjectAbleToDie: {fileID: 837836837547629702}
+  onDied:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 837836837547629702}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4597583280114388876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837836837547629702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26754394da0f407f96ea5354c8772933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 4635019335779838631, guid: c6a99adcf823143e2a8654f9eef5a5e8, type: 3}
 --- !u!1 &837836837611287689
 GameObject:
   m_ObjectHideFlags: 0
