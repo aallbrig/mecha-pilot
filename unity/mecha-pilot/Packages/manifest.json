@@ -11,6 +11,8 @@
   "dependencies": {
     "com.fluid.behavior-tree": "2.2.3",
     "com.fluid.state-machine": "2.0.1",
+    "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.2d.tilemap.extras": "2.2.3",
     "com.unity.addressables": "1.19.19",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "1.17.6",
