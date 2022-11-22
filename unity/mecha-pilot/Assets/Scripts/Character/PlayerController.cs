@@ -1,5 +1,3 @@
-using System;
-using Combat;
 using Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,8 +11,9 @@ namespace Character
     {
         public float speed = 7f;
         public float timeBetweenShotsInSeconds = 0.25f;
-        public ObjectPool bulletPool;
         public Vector2 initialMovementVector = Vector2.zero;
+        public Transform firingOrigin;
+        public ParticleSystem projectileParticles;
         private CharacterController _characterController;
         private PlayerInput _playerInput;
         private float _timeLastFired;
@@ -45,21 +44,19 @@ namespace Character
             if (_transform) _transform.position = Vector3.zero;
         }
 
-        private void Start()
-        {
-            _characterController = GetComponent<CharacterController>();
-            bulletPool ??= GetComponent<ObjectPool>();
-            if (bulletPool == null)
-            {
-                enabled = false;
-                throw new NullReferenceException("bullet pool required");
-            }
-        }
+        private void Start() => _characterController = GetComponent<CharacterController>();
         private void Update()
         {
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
             if (PlayerMoveVector != Vector3.zero)
+            {
                 _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
+                if (_transform.eulerAngles.y == 0f)
+                {
+                    var transformEulerAngles = _transform.eulerAngles;
+                    _transform.eulerAngles = new Vector3(transformEulerAngles.x, 90f, transformEulerAngles.z);
+                }
+            }
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
         }
@@ -95,17 +92,17 @@ namespace Character
         }
         private void Fire()
         {
-            var bullet = GetBulletFromPool();
-            bullet.transform.position = gameObject.transform.position + FireDirection * 3f;
-            if (bullet.TryGetComponent<Projectile>(out var projectile))
-            {
-                projectile.firingDirectionNormalized = FireDirection;
-                projectile.ImpactHasOccurred += impact => bulletPool.RecyclePoolObject(impact.Impacter);
-            }
-            bullet.SetActive(true);
+            if (firingOrigin == null) return;
+            if (projectileParticles == null) return;
+            if (FireInput == Vector2.zero) return;
+
             _timeLastFired = Time.time;
+            var fireDirection = new Vector3(FireInput.x, FireInput.y, 0);
+            var directionWithBuffer = _transform.position + fireDirection.normalized * 3f;
+            firingOrigin.position = directionWithBuffer;
+            firingOrigin.rotation = Quaternion.LookRotation(new Vector3(FireInput.x, FireInput.y, 0));
+            projectileParticles.Emit(1);
         }
-        private GameObject GetBulletFromPool() => bulletPool.GetPoolObject();
     }
 
     public interface IProcessMovement
