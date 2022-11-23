@@ -51,7 +51,6 @@ namespace Player
                 }
             }
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
-            if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
             if (FireInput != Vector2.zero)
             {
                 firingOrigin.rotation = Quaternion.LookRotation(new Vector3(FireInput.x, FireInput.y, 0));
@@ -62,6 +61,7 @@ namespace Player
                 firingOrigin.localPosition = _startFireOriginPosition;
                 firingOrigin.localRotation = _startFireOriginRotation;
             }
+            if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
         }
         private void OnEnable()
         {
