@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,8 +9,8 @@ namespace Gameplay
     {
         public GameManager gameManager;
         public GameState targetState = GameState.Menu;
-        public List<UnityEvent> onEnter;
-        public List<UnityEvent> onExit;
+        public UnityEvent onEnter;
+        public UnityEvent onExit;
         private void Awake()
         {
             gameManager ??= GetComponent<GameManager>();
@@ -34,13 +33,11 @@ namespace Gameplay
         }
         private void HandleGameManagerStateExited(GameState state)
         {
-            if (state == targetState && onExit.Count > 0)
-                onExit.ForEach(fn => fn.Invoke());
+            if (state == targetState) onExit?.Invoke();
         }
         private void HandleGameManagerStateEntered(GameState state)
         {
-            if (state == targetState && onEnter.Count > 0)
-                onEnter.ForEach(fn => fn.Invoke());
+            if (state == targetState) onEnter?.Invoke();
         }
         # if UNITY_EDITOR
         private GameState _currentGameState;

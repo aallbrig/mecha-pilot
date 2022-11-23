@@ -7568,10 +7568,10 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 1
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 353923918}
-        m_TargetAssemblyTypeName: Scoring.ScoreManager, Scripts
+        m_TargetAssemblyTypeName: Scoring.ScoreManager, Scoring
         m_MethodName: Reset
         m_Mode: 1
         m_Arguments:
@@ -7582,7 +7582,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onExit: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &355827431
 GameObject:
   m_ObjectHideFlags: 0
@@ -7868,21 +7870,11 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 1
   onEnter:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 259446125}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onExit: []
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &370011415
 GameObject:
   m_ObjectHideFlags: 0
@@ -22366,7 +22358,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 1
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1589714649}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -22393,10 +22385,10 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   onExit:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1589714651}
-        m_TargetAssemblyTypeName: Character.PlayerController, Scripts
+        m_TargetAssemblyTypeName: Player.PlayerController, Player
         m_MethodName: Reset
         m_Mode: 1
         m_Arguments:
@@ -34949,7 +34941,7 @@ GameObject:
   - component: {fileID: 1657028234}
   - component: {fileID: 1657028233}
   m_Layer: 0
-  m_Name: User Interface
+  m_Name: User Interface Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34987,7 +34979,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 0
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 717605895}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -35000,7 +34992,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 644613426}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35012,7 +35004,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 1780749869}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35024,7 +35016,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 102298173}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35036,8 +35028,10 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
-  onExit: []
+        m_CallState: 2
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1657028233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35053,7 +35047,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 3
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 717605895}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -35066,7 +35060,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 644613426}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35078,7 +35072,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 1780749869}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35090,7 +35084,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 102298173}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35102,36 +35096,10 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 1
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519973259}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
   onExit:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519973259}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 1
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1657028234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35147,7 +35115,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 2
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 717605895}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -35160,7 +35128,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 644613426}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35172,7 +35140,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 1780749869}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35184,7 +35152,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 102298173}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35196,8 +35164,10 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
-  onExit: []
+        m_CallState: 2
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1657028235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35213,7 +35183,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 1
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 717605895}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -35226,7 +35196,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 644613426}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35238,7 +35208,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 1780749869}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35250,7 +35220,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 102298173}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -35262,22 +35232,10 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519973259}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 1
-  onExit: []
+        m_CallState: 2
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1661208880
 GameObject:
   m_ObjectHideFlags: 0
@@ -41584,7 +41542,7 @@ MonoBehaviour:
   gameManager: {fileID: 737678005}
   targetState: 1
   onEnter:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1409960596}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -41599,7 +41557,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   onExit:
-  - m_PersistentCalls:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1409960596}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -45001,9 +44959,5 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 75119528}
-    - target: {fileID: 8674640186012286865, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
-      propertyPath: m_UIInputModule
-      value: 
-      objectReference: {fileID: 262806179}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}

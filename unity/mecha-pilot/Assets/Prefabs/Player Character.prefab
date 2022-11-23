@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 7009376957854977561}
   - component: {fileID: -547723752145302197}
   - component: {fileID: 4597583280114388876}
-  - component: {fileID: 33061183063000363}
   m_Layer: 6
   m_Name: Player Character
   m_TagString: Untagged
@@ -112,7 +111,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837836837547629702}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -280,19 +279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 4635019335779838631, guid: c6a99adcf823143e2a8654f9eef5a5e8, type: 3}
---- !u!114 &33061183063000363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837836837547629702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3d535139046417f959b3ab2b96d6ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 837836837547629700}
 --- !u!1 &837836838054854055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1825,7 +1811,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 60
       minScalar: 10
       maxCurve:
         serializedVersion: 2
