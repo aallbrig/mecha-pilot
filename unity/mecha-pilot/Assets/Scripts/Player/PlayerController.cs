@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using PlayerInput = Generated.PlayerInput;
 
 namespace Player
 {
@@ -13,7 +12,6 @@ namespace Player
         public Transform firingOrigin;
         public ParticleSystem projectileParticles;
         private CharacterController _characterController;
-        private PlayerInput _playerInput;
         private Vector3 _startFireOriginPosition;
         private Quaternion _startFireOriginRotation;
         private float _timeLastFired;
@@ -27,17 +25,7 @@ namespace Player
 
         public Vector2 FireInput { get; private set; }
 
-        private void Awake()
-        {
-            _transform = transform;
-            _playerInput = new PlayerInput();
-            _playerInput.GamePlay.Move.started += HandleMovement;
-            _playerInput.GamePlay.Move.performed += HandleMovement;
-            _playerInput.GamePlay.Move.canceled += HandleMovement;
-            _playerInput.GamePlay.Fire.started += HandleFireWeaponCommand;
-            _playerInput.GamePlay.Fire.performed += HandleFireWeaponCommand;
-            _playerInput.GamePlay.Fire.canceled += HandleFireWeaponCommand;
-        }
+        private void Awake() => _transform = transform;
 
         public void Reset()
         {
@@ -77,7 +65,6 @@ namespace Player
         }
         private void OnEnable()
         {
-            _playerInput.Enable();
             _timeLastFired = Time.time - timeBetweenShotsInSeconds;
             if (initialMovementVector != Vector2.zero)
             {
@@ -85,7 +72,6 @@ namespace Player
                 PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
             }
         }
-        private void OnDisable() => _playerInput.Disable();
 
         public void HandleFireWeaponCommand(InputAction.CallbackContext context)
         {
