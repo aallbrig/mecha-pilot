@@ -5,7 +5,7 @@ using Spawners;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Gameplay.Boss
+namespace OpposingForce.Boss
 {
     [RequireComponent(typeof(Slider))]
     public class TrackerUntilBoss : MonoBehaviour

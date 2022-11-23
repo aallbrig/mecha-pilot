@@ -1,8 +1,9 @@
 ﻿#if UNITY_EDITOR
+using Combat;
 using UnityEditor;
 using UnityEngine;
 
-namespace Combat.Editor
+namespace Editor.Combat
 {
     [CustomEditor(typeof(OnDiedTrigger))]
     public class OnDiedTriggerEditor : UnityEditor.Editor

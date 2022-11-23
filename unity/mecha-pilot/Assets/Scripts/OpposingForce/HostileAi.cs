@@ -1,7 +1,7 @@
-using Character;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using Gameplay;
+using Player;
 using UnityEngine;
 
 namespace OpposingForce
@@ -13,7 +13,7 @@ namespace OpposingForce
         public float closeEnoughDistance;
         public float minSpeed = 6.0f;
         public float maxSpeed = 12.0f;
-        [SerializeField] private BehaviorTree _tree;
+        [SerializeField] private BehaviorTree tree;
         private float _distanceToPlayer;
         private GameManager _gameManager;
         private GameObject _player;
@@ -24,12 +24,12 @@ namespace OpposingForce
         {
             _transform = transform;
             _rigidBody = GetComponent<Rigidbody>();
-            _tree = GetBehaviorTree();
+            tree = GetBehaviorTree();
             var playerController = FindObjectOfType<PlayerController>(true);
             if (playerController)
                 _player = playerController.gameObject;
         }
-        private void Update() => _tree.Tick();
+        private void Update() => tree.Tick();
         private void OnEnable()
         {
             _rigidBody.velocity = Vector3.zero;

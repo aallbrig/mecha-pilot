@@ -1,12 +1,10 @@
-using Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerInput = Generated.PlayerInput;
 
-namespace Character
+namespace Player
 {
     [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(ObjectPool))]
     public class PlayerController : MonoBehaviour, IProcessMovement, IProcessFireWeaponCommand
     {
         public float speed = 7f;
@@ -16,6 +14,8 @@ namespace Character
         public ParticleSystem projectileParticles;
         private CharacterController _characterController;
         private PlayerInput _playerInput;
+        private Vector3 _startFireOriginPosition;
+        private Quaternion _startFireOriginRotation;
         private float _timeLastFired;
         private Transform _transform;
 
@@ -44,7 +44,12 @@ namespace Character
             if (_transform) _transform.position = Vector3.zero;
         }
 
-        private void Start() => _characterController = GetComponent<CharacterController>();
+        private void Start()
+        {
+            _characterController = GetComponent<CharacterController>();
+            _startFireOriginPosition = firingOrigin.localPosition;
+            _startFireOriginRotation = firingOrigin.localRotation;
+        }
         private void Update()
         {
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
@@ -59,6 +64,16 @@ namespace Character
             }
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             if (FireInput != Vector2.zero && Time.time - _timeLastFired > timeBetweenShotsInSeconds) Fire();
+            if (FireInput != Vector2.zero)
+            {
+                firingOrigin.rotation = Quaternion.LookRotation(new Vector3(FireInput.x, FireInput.y, 0));
+            }
+            else if (firingOrigin.localPosition != _startFireOriginPosition ||
+                     firingOrigin.localRotation != _startFireOriginRotation)
+            {
+                firingOrigin.localPosition = _startFireOriginPosition;
+                firingOrigin.localRotation = _startFireOriginRotation;
+            }
         }
         private void OnEnable()
         {
@@ -100,7 +115,6 @@ namespace Character
             var fireDirection = new Vector3(FireInput.x, FireInput.y, 0);
             var directionWithBuffer = _transform.position + fireDirection.normalized * 3f;
             firingOrigin.position = directionWithBuffer;
-            firingOrigin.rotation = Quaternion.LookRotation(new Vector3(FireInput.x, FireInput.y, 0));
             projectileParticles.Emit(1);
         }
     }

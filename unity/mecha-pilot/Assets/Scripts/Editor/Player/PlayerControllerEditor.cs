@@ -1,9 +1,10 @@
 #if UNITY_EDITOR
 using System.Text;
+using Player;
 using UnityEditor;
 using UnityEngine;
 
-namespace Character.Editor
+namespace Editor.Player
 {
     [CustomEditor(typeof(PlayerController))]
     public class PlayerControllerEditor : UnityEditor.Editor

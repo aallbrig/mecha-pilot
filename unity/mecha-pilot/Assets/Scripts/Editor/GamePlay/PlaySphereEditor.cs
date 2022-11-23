@@ -1,9 +1,10 @@
 ﻿#if UNITY_EDITOR
 using System.Text;
+using Gameplay;
 using UnityEditor;
 using UnityEngine;
 
-namespace Gameplay.Editor
+namespace Editor.GamePlay
 {
     [CustomEditor(typeof(PlaySphere))]
     public class PlaySphereEditor : UnityEditor.Editor

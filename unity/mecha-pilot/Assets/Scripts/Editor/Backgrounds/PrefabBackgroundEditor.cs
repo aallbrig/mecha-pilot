@@ -1,9 +1,10 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using Backgrounds;
 using UnityEditor;
 using UnityEngine;
 
-namespace Backgrounds.Editor
+namespace Editor.Backgrounds
 {
     [CustomEditor(typeof(PrefabBackground))]
     public class PrefabBackgroundEditor : UnityEditor.Editor

@@ -1,0 +1,21 @@
+{
+    "name": "OpposingForce",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a1d2aafb63704447b379c9daae015645",
+        "GUID:9536fc91c7c04435b8771532044a635d",
+        "GUID:7e2a67b901864bea955f14964ff40977",
+        "GUID:64cd952387f040f68a3a56740aed0f3c",
+        "GUID:f3b3be1de3794287a057f40392043896",
+        "GUID:6e23c03f237a456293f3acffb683a437"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
