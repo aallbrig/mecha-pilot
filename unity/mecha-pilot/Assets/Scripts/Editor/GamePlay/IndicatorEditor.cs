@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Gameplay;
 using UnityEditor;
 using UnityEngine;
@@ -45,3 +46,4 @@ namespace Editor.GamePlay
         }
     }
 }
+#endif
