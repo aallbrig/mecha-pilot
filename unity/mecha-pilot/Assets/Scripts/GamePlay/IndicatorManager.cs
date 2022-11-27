@@ -13,19 +13,22 @@ namespace Gameplay
         public Vector3 offset = Vector3.zero;
         public float distanceAway = 2f;
         public GameManager gameManager;
+        private readonly Dictionary<GameObject, Action<GameObject>> _activeMethods = new();
         private readonly List<GameObject> _activePoolItems = new();
         private ObjectPool<GameObject> _indicatorPool;
         public void Reset()
         {
-            foreach (var indicator in _activePoolItems)
-                try
+            foreach (var poolItem in _activePoolItems)
+            {
+                if (_activeMethods.TryGetValue(poolItem, out var onDied) &&
+                    poolItem.TryGetComponent<ICanDie>(out var ableToDie))
                 {
-                    _indicatorPool.Release(indicator);
+                    ableToDie.Died -= onDied;
+                    _activeMethods.Remove(poolItem);
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+
+                _indicatorPool.Release(poolItem);
+            }
             _activePoolItems.Clear();
         }
         private void Start()
@@ -59,8 +62,10 @@ namespace Gameplay
                     ableToDie.Died -= OnDied;
                     _indicatorPool.Release(poolItem);
                     _activePoolItems.Remove(poolItem);
+                    _activeMethods.Remove(poolItem);
                 }
 
+                _activeMethods.Add(poolItem, OnDied);
                 ableToDie.Died += OnDied;
             }
         }

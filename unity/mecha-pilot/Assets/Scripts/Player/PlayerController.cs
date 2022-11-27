@@ -12,7 +12,7 @@ namespace Player
         public Vector2 initialMovementVector = Vector2.zero;
         public Transform firingOrigin;
         public ParticleSystem projectileParticles;
-        public UnityEvent OnWeaponFired;
+        public UnityEvent onWeaponFired;
         private CharacterController _characterController;
         private Vector3 _startFireOriginPosition;
         private Quaternion _startFireOriginRotation;
@@ -105,7 +105,7 @@ namespace Player
             firingOrigin.position = directionWithBuffer;
             projectileParticles.Emit(1);
 
-            OnWeaponFired?.Invoke();
+            onWeaponFired?.Invoke();
         }
     }
 

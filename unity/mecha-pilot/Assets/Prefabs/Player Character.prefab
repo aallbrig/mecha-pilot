@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1589714652}
   - component: {fileID: 8719977425291792671}
   - component: {fileID: 837836837547629700}
-  - component: {fileID: 8674640186012286865}
   - component: {fileID: 7009376957854977561}
   - component: {fileID: -547723752145302197}
   - component: {fileID: 4597583280114388876}
@@ -104,7 +103,7 @@ MonoBehaviour:
   initialMovementVector: {x: 0, y: 0.5}
   firingOrigin: {fileID: 7835776192833569124}
   projectileParticles: {fileID: 1370066299380380799}
-  OnWeaponFired:
+  onWeaponFired:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5973464692045502483}
@@ -119,127 +118,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8674640186012286865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837836837547629702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: e64b7a985d9ff4e45b8a84c593c6dffa, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 837836837547629700}
-        m_TargetAssemblyTypeName: Character.PlayerController, Scripts
-        m_MethodName: HandleMovement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 317abc99-1d17-49f0-91c7-dd59209af4aa
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 837836837547629700}
-        m_TargetAssemblyTypeName: Character.PlayerController, Scripts
-        m_MethodName: HandleFireWeaponCommand
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: cf5213ec-d942-4567-8c92-90b58e3e18eb
-    m_ActionName: Player/Fire[/Mouse/leftButton,/Device Simulator Touchscreen/primaryTouch/tap,/Simulated
-      Touchscreen/primaryTouch/tap]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 36df62dc-7b12-444c-947e-d30731f770f5
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6f2bb648-5de1-442a-9a80-befa9b317207
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 773f3c9b-fb49-4087-89aa-8008012a3184
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 18dfa81f-225d-4234-b643-7765f4536b48
-    m_ActionName: UI/Point[/Mouse/position,/Pen/position,/Device Simulator Touchscreen/touch0/position,/Device
-      Simulator Touchscreen/touch1/position,/Device Simulator Touchscreen/touch2/position,/Device
-      Simulator Touchscreen/touch3/position,/Device Simulator Touchscreen/touch4/position,/Device
-      Simulator Touchscreen/touch5/position,/Device Simulator Touchscreen/touch6/position,/Device
-      Simulator Touchscreen/touch7/position,/Device Simulator Touchscreen/touch8/position,/Device
-      Simulator Touchscreen/touch9/position,/Simulated Touchscreen/touch0/position,/Simulated
-      Touchscreen/touch1/position,/Simulated Touchscreen/touch2/position,/Simulated
-      Touchscreen/touch3/position,/Simulated Touchscreen/touch4/position,/Simulated
-      Touchscreen/touch5/position,/Simulated Touchscreen/touch6/position,/Simulated
-      Touchscreen/touch7/position,/Simulated Touchscreen/touch8/position,/Simulated
-      Touchscreen/touch9/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e9c40ea4-5f8a-4354-91e1-620f300e6f94
-    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip,/Device Simulator Touchscreen/touch0/press,/Device
-      Simulator Touchscreen/touch1/press,/Device Simulator Touchscreen/touch2/press,/Device
-      Simulator Touchscreen/touch3/press,/Device Simulator Touchscreen/touch4/press,/Device
-      Simulator Touchscreen/touch5/press,/Device Simulator Touchscreen/touch6/press,/Device
-      Simulator Touchscreen/touch7/press,/Device Simulator Touchscreen/touch8/press,/Device
-      Simulator Touchscreen/touch9/press,/Simulated Touchscreen/touch0/press,/Simulated
-      Touchscreen/touch1/press,/Simulated Touchscreen/touch2/press,/Simulated Touchscreen/touch3/press,/Simulated
-      Touchscreen/touch4/press,/Simulated Touchscreen/touch5/press,/Simulated Touchscreen/touch6/press,/Simulated
-      Touchscreen/touch7/press,/Simulated Touchscreen/touch8/press,/Simulated Touchscreen/touch9/press]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 35e21597-e02b-4beb-b601-c4b29b6eab9d
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: efd9753b-9f82-46ee-9ecb-23ab6d296cc1
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8e6390d0-6beb-4e2a-a46a-6a0eddcade32
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4fbba0be-dc32-4e9b-84b2-e7ac6503ee1f
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fd4ca778-5082-4ac8-96cc-7c39acf166dd
-    m_ActionName: UI/TrackedDeviceOrientation
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: GamePlay
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &7009376957854977561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +131,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  onDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onDied:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Gameplay.IndicatorManager, GamePlay
+        m_MethodName: Reset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &-547723752145302197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,7 +825,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a4a2d5e0ac9e24740b609a1643adf793, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.815
   m_Pitch: 1
   Loop: 0
   Mute: 0
