@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Player
@@ -11,6 +12,7 @@ namespace Player
         public Vector2 initialMovementVector = Vector2.zero;
         public Transform firingOrigin;
         public ParticleSystem projectileParticles;
+        public UnityEvent OnWeaponFired;
         private CharacterController _characterController;
         private Vector3 _startFireOriginPosition;
         private Quaternion _startFireOriginRotation;
@@ -102,6 +104,8 @@ namespace Player
             var directionWithBuffer = _transform.position + fireDirection.normalized * 3f;
             firingOrigin.position = directionWithBuffer;
             projectileParticles.Emit(1);
+
+            OnWeaponFired?.Invoke();
         }
     }
 
