@@ -36,12 +36,7 @@ namespace Editor.GamePlay
         public override void OnInspectorGUI()
         {
             _lineThickness = EditorGUILayout.FloatField("Line Thickness", _lineThickness);
-            if (GUILayout.Button("Sync Position"))
-            {
-                if (_component.track == null || _component.follow == null) return;
 
-                _transform.position = _component.CalculateIndicatorPosition();
-            }
             base.OnInspectorGUI();
         }
     }

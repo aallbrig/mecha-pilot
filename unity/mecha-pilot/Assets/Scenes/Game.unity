@@ -57890,9 +57890,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 206506938}
   indicatorPrefab: {fileID: 6122373719734581335, guid: 1afa8ce70260f448f8e3ae8a7c19dc9f, type: 3}
-  offset: {x: 0, y: 0, z: -3}
-  distanceAway: 3
-  gameManager: {fileID: 0}
 --- !u!114 &1896367149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57909,19 +57906,7 @@ MonoBehaviour:
   targetState: 1
   onEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1896367148}
-        m_TargetAssemblyTypeName: Gameplay.IndicatorManager, GamePlay
-        m_MethodName: Reset
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onExit:
     m_PersistentCalls:
       m_Calls: []
@@ -66132,6 +66117,10 @@ PrefabInstance:
     - target: {fileID: 837836837547629702, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: m_Name
       value: Player Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009376957854977561, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
+      propertyPath: onDied.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7009376957854977561, guid: 9543927bdcc03f248a5a842a439985dc, type: 3}
       propertyPath: onDied.m_PersistentCalls.m_Calls.Array.data[0].m_Target

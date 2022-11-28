@@ -3,44 +3,48 @@ using UnityEngine.Animations;
 
 namespace Gameplay
 {
-    [RequireComponent(typeof(LookAtConstraint))]
+    [RequireComponent(typeof(LookAtConstraint), typeof(PositionConstraint))]
     public class Indicator : MonoBehaviour
     {
         public Transform follow;
         public Transform track;
-        public float distanceAway = 3f;
-        public Vector3 offset = Vector3.zero;
         private LookAtConstraint _lookAtConstraint;
-        private Transform _transform;
-        private void Update()
+        private PositionConstraint _positionConstraint;
+        private void Awake()
         {
-            if (track == null || follow == null) return;
-
-            _transform.position = CalculateIndicatorPosition();
+            _lookAtConstraint = GetComponent<LookAtConstraint>();
+            _positionConstraint = GetComponent<PositionConstraint>();
         }
         private void OnEnable()
         {
-            _lookAtConstraint = GetComponent<LookAtConstraint>();
-            _transform = transform;
             SyncLookAtConstraint();
-        }
-        public Vector3 CalculateIndicatorPosition()
-        {
-            var followPosition = follow.position;
-            var direction = (followPosition - track.position).normalized;
-            return followPosition - offset - direction * distanceAway;
+            SyncPositionConstraint();
         }
         private void SyncLookAtConstraint()
         {
+            if (!track) return;
             if (_lookAtConstraint.sourceCount > 0)
                 for (var i = _lookAtConstraint.sourceCount - 1; i >= 0; i--)
-                    _lookAtConstraint.RemoveSource(i);
-            _lookAtConstraint.AddSource(new ConstraintSource { sourceTransform = track, weight = 1.0f });
+                    if (_lookAtConstraint.GetSource(i).sourceTransform != track)
+                        _lookAtConstraint.RemoveSource(i);
+            if (_lookAtConstraint.sourceCount == 0)
+                _lookAtConstraint.AddSource(new ConstraintSource { sourceTransform = track, weight = 1.0f });
+        }
+        private void SyncPositionConstraint()
+        {
+            if (!follow) return;
+            if (_positionConstraint.sourceCount > 0)
+                for (var i = _positionConstraint.sourceCount - 1; i >= 0; i--)
+                    if (_positionConstraint.GetSource(i).sourceTransform != follow)
+                        _positionConstraint.RemoveSource(i);
+            if (_positionConstraint.sourceCount == 0)
+                _positionConstraint.AddSource(new ConstraintSource { sourceTransform = follow, weight = 1.0f });
         }
         public void SetTrack(Transform trackTarget)
         {
             track = trackTarget;
             SyncLookAtConstraint();
+            SyncPositionConstraint();
         }
     }
 }

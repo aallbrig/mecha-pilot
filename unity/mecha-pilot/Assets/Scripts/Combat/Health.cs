@@ -16,6 +16,7 @@ namespace Combat
         {
             TimeOfDeath = 0;
             _dead = false;
+            _currentHealth = maxHealth;
         }
 
         public void OnCollisionEnter() => Damage(maxHealth);
