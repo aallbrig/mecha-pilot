@@ -33300,6 +33300,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1026992985}
     m_Modifications:
+    - target: {fileID: 1052542338, guid: d16edd71667ee4ca19ed99b52afee418, type: 3}
+      propertyPath: m_Sources.Array.data[0].sourceTransform
+      value: 
+      objectReference: {fileID: 206506938}
     - target: {fileID: 6293213293137438986, guid: d16edd71667ee4ca19ed99b52afee418, type: 3}
       propertyPath: m_Name
       value: Play Sphere
@@ -33360,25 +33364,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6293213293137438986, guid: d16edd71667ee4ca19ed99b52afee418, type: 3}
   m_PrefabInstance: {fileID: 1052542335}
   m_PrefabAsset: {fileID: 0}
---- !u!1818360608 &1052542338
-PositionConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052542337}
-  m_Enabled: 1
-  m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 0}
-  m_TranslationOffset: {x: 0, y: 0, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
-  m_IsContraintActive: 1
-  m_IsLocked: 1
-  m_Sources:
-  - sourceTransform: {fileID: 206506938}
-    weight: 1
 --- !u!135 &1052542340 stripped
 SphereCollider:
   m_CorrespondingSourceObject: {fileID: 6293213293137438980, guid: d16edd71667ee4ca19ed99b52afee418, type: 3}
@@ -57890,6 +57875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 206506938}
   indicatorPrefab: {fileID: 6122373719734581335, guid: 1afa8ce70260f448f8e3ae8a7c19dc9f, type: 3}
+  _activePoolInstances: []
 --- !u!114 &1896367149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57909,7 +57895,19 @@ MonoBehaviour:
       m_Calls: []
   onExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1896367148}
+        m_TargetAssemblyTypeName: Gameplay.IndicatorManager, GamePlay
+        m_MethodName: Reset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1898507529
 GameObject:
   m_ObjectHideFlags: 0

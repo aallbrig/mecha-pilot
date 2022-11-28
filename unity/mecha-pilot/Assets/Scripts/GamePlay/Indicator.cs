@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Events;
 
 namespace Gameplay
 {
@@ -8,12 +9,21 @@ namespace Gameplay
     {
         public Transform follow;
         public Transform track;
+        public UnityEvent onTrackDeactivated;
         private LookAtConstraint _lookAtConstraint;
         private PositionConstraint _positionConstraint;
         private void Awake()
         {
             _lookAtConstraint = GetComponent<LookAtConstraint>();
             _positionConstraint = GetComponent<PositionConstraint>();
+        }
+        private void Update()
+        {
+            if (track != null && !track.gameObject.activeSelf)
+            {
+                onTrackDeactivated?.Invoke();
+                track = null;
+            }
         }
         private void OnEnable()
         {
