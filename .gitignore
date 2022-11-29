@@ -3,3 +3,5 @@
 docker/nginx/webgl/Build
 docker/nginx/webgl/StreamingAssets
 docker/nginx/webgl/TemplateData
+docker/nginx/webgl/index.html
+
