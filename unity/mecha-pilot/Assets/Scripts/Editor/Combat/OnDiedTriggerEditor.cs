@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using Combat;
+﻿using Combat;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,4 +17,3 @@ namespace Editor.Combat
         }
     }
 }
-#endif
