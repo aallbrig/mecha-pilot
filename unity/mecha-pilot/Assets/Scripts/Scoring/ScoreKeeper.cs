@@ -6,20 +6,26 @@ namespace Scoring
     [ExecuteInEditMode]
     public class ScoreKeeper : MonoBehaviour
     {
-        public ScoreManager scoreManager;
         public TextMeshProUGUI textMesh;
         public string beforeScoreText = "Score:";
+        private int _currentScore;
 
-        public void Reset() => SyncCurrentScore();
+        public void Reset()
+        {
+            _currentScore = 0;
+            SyncCurrentScore();
+        }
         private void Start()
         {
             textMesh ??= GetComponent<TextMeshProUGUI>();
             Reset();
         }
-        private void OnEnable() => scoreManager.ScoreAdded += OnScoreAdded;
-        private void OnDisable() => scoreManager.ScoreAdded -= OnScoreAdded;
-        private void OnScoreAdded(ScoreAddedResult scoreAddedResult) => SyncCurrentScore();
-        private void SyncCurrentScore() => textMesh.text = $"{beforeScoreText} {scoreManager.currentScore.score}";
+        public void OnScoreAdded(ScoreAddedResult scoreAddedResult)
+        {
+            _currentScore = scoreAddedResult.UpdatedScore;
+            SyncCurrentScore();
+        }
+        private void SyncCurrentScore() => textMesh.text = $"{beforeScoreText} {_currentScore}";
     }
 
 }

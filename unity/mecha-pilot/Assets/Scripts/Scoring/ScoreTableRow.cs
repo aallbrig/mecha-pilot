@@ -19,7 +19,7 @@ namespace Scoring
         {
             if (initials) initials.text = score.initials;
             if (gameScore) gameScore.text = $"{score.score}";
-            if (playTime) playTime.text = $"{score.playTime / 1000}";
+            if (playTime) playTime.text = $"{score.PlayTime / 1000}";
             if (playDate) playDate.text = $"{score.playDate}";
         }
     }

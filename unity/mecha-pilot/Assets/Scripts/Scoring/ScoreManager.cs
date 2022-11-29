@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Scoring
 {
@@ -8,27 +9,26 @@ namespace Scoring
     {
         public ScoreRecord currentScore;
         public List<ScoreRecord> scores;
+        public UnityEvent<ScoreAddedResult> onScoreAdded;
+
         public void Reset()
         {
             currentScore = new ScoreRecord
             {
                 playDate = DateTime.Today,
-                playTime = 0,
+                startTime = Time.time,
                 score = 0
             };
             var result = new ScoreAddedResult
             {
                 PreviousScore = currentScore.score,
-                UpdatedScore = currentScore.score,
-                ScoreIncrease = 0
+                UpdatedScore = 0,
+                ScoreIncrease = -currentScore.score
             };
-            ScoreAdded?.Invoke(result);
+            onScoreAdded?.Invoke(result);
         }
 
         private void OnEnable() => Reset();
-        private void OnDisable() {}
-
-        public event Action<ScoreAddedResult> ScoreAdded;
 
         public void AddToCurrentScore(int scoreIncrease)
         {
@@ -39,7 +39,9 @@ namespace Scoring
                 ScoreIncrease = scoreIncrease
             };
             currentScore.score = result.UpdatedScore;
-            ScoreAdded?.Invoke(result);
+            onScoreAdded?.Invoke(result);
         }
+
+        public void SetEndTime() => currentScore.endTime = Time.time;
     }
 }

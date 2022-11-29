@@ -7,7 +7,10 @@ namespace Scoring
     {
         public int score;
         public string initials;
-        public float playTime;
         public DateTime playDate;
+        public float startTime;
+        public float endTime;
+
+        public float PlayTime => endTime - startTime;
     }
 }
