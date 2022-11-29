@@ -7,3 +7,5 @@ services:
     build: .
     ports:
       - "80:80"
+    volumes:
+      - ./webgl:/webgl
