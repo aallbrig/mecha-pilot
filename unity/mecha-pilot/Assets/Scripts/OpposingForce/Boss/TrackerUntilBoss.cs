@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using Combat;
-using Combat.OnDiedBehavior;
-using Gameplay.OutOfPlaySphereBehaviors;
 using Spawners;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OpposingForce.Boss
@@ -13,6 +13,8 @@ namespace OpposingForce.Boss
         public Spawner spawner;
         public int enemiesBeforeBoss = 20;
         public Slider sliderUi;
+        public UnityEvent onEffortPotentialReached;
+        private readonly List<ICanDie> _deathsTracked = new();
         private int _currentEnemiesKilledCount;
         private void Awake()
         {
@@ -34,13 +36,17 @@ namespace OpposingForce.Boss
         private void HandleSpawnerSpawned(GameObject spawnee)
         {
             var ableToDie = spawnee.GetComponent<ICanDie>();
-            ableToDie.Died += TrackDeath;
-            spawnee.GetComponent<DeactivateWhenOutsidePlaySphere>().Deactivated += () => ableToDie.Died -= TrackDeath;
-            spawnee.GetComponent<DeactivateOnPlayerDeath>().Deactivated += () => ableToDie.Died -= TrackDeath;
+            if (!_deathsTracked.Contains(ableToDie))
+            {
+                ableToDie.Died += TrackDeath;
+                _deathsTracked.Add(ableToDie);
+            }
         }
         private void TrackDeath(GameObject enemy)
         {
-            _currentEnemiesKilledCount++;
+            _currentEnemiesKilledCount = Mathf.Clamp(_currentEnemiesKilledCount + 1, 0, enemiesBeforeBoss);
+            if (_currentEnemiesKilledCount >= enemiesBeforeBoss)
+                onEffortPotentialReached?.Invoke();
             SyncSlider();
         }
         private void SyncSlider() => sliderUi.value = _currentEnemiesKilledCount;

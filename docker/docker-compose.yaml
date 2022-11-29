@@ -4,8 +4,8 @@ services:
   webgl:
     container_name: unity-webgl-static-site
     image: unity-webgl-static-site
-    build: .
+    build: ./nginx
     ports:
       - "80:80"
     volumes:
-      - ./webgl:/webgl
+      - ./nginx/webgl:/webgl

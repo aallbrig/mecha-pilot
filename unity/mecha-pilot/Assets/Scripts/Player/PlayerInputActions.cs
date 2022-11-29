@@ -24,7 +24,7 @@ namespace Player
         private void HandleFireWeaponCommand(InputAction.CallbackContext obj) =>
             playerController.HandleFireWeaponCommand(obj);
 
-        private void HandleMovement(InputAction.CallbackContext obj) =>
-            playerController.HandleMovement(obj);
+        private void HandleMovement(InputAction.CallbackContext cxt) =>
+            playerController.HandleMovement(cxt);
     }
 }

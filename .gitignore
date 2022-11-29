@@ -1,2 +1,5 @@
 .idea
 .DS_Store
+docker/nginx/webgl/Build
+docker/nginx/webgl/StreamingAssets
+docker/nginx/webgl/TemplateData

@@ -27,6 +27,8 @@ namespace Player
 
         public Vector2 FireInput { get; private set; }
 
+        public Vector2 LastMoveInput { get; set; }
+
         private void Awake() => _transform = transform;
 
         public void Reset()
@@ -43,15 +45,14 @@ namespace Player
         private void Update()
         {
             _characterController.Move(PlayerMoveVector * Time.deltaTime);
+            var moveInputConsidered = MoveInput == Vector2.zero ? LastMoveInput : MoveInput;
+            _transform.rotation = Quaternion.LookRotation(new Vector3(moveInputConsidered.x, moveInputConsidered.y, 0));
             if (PlayerMoveVector != Vector3.zero)
-            {
-                _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
                 if (_transform.eulerAngles.y == 0f)
                 {
                     var transformEulerAngles = _transform.eulerAngles;
                     _transform.eulerAngles = new Vector3(transformEulerAngles.x, 90f, transformEulerAngles.z);
                 }
-            }
             FireDirection = new Vector3(FireInput.x, FireInput.y, 0).normalized;
             if (FireInput != Vector2.zero)
             {
@@ -71,6 +72,7 @@ namespace Player
             if (initialMovementVector != Vector2.zero)
             {
                 MoveInput = new Vector2(-initialMovementVector.x, initialMovementVector.y);
+                LastMoveInput = MoveInput.normalized * 0.3f;
                 PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
             }
         }
@@ -84,15 +86,18 @@ namespace Player
         public void HandleMovement(InputAction.CallbackContext context)
         {
             MoveInput = context.ReadValue<Vector2>();
-            MoveInput = new Vector2(-MoveInput.x, MoveInput.y);
-            PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
+            if (MoveInput != Vector2.zero)
+            {
+                MoveInput = new Vector2(-MoveInput.x, MoveInput.y);
+                LastMoveInput = MoveInput.normalized * 0.3f;
+                PlayerMoveVector = new Vector3(MoveInput.x, MoveInput.y, 0) * speed;
+            }
+            else
+            {
+                PlayerMoveVector = new Vector3(LastMoveInput.x, LastMoveInput.y, 0) * speed;
+            }
         }
-        private void Move()
-        {
-            _characterController.Move(PlayerMoveVector * Time.deltaTime);
-            if (PlayerMoveVector != Vector3.zero)
-                _transform.rotation = Quaternion.LookRotation(new Vector3(MoveInput.x, MoveInput.y, 0));
-        }
+
         private void Fire()
         {
             if (firingOrigin == null) return;
