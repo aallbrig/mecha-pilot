@@ -38,7 +38,7 @@ namespace Editor.Backgrounds
                 _componentInstance.Reset();
             base.OnInspectorGUI();
         }
-        public void CreateBackgroundContainers()
+        private void CreateBackgroundContainers()
         {
             var startingContainer =
                 _componentInstance.NewBackgroundContainer(new MissingBackgroundContainerReport

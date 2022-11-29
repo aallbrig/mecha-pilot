@@ -10,29 +10,29 @@ namespace Gameplay
     {
         public Transform player;
         public GameObject indicatorPrefab;
-        [SerializeField] private List<GameObject> _activePoolInstances = new();
+        [SerializeField] private List<GameObject> activePoolInstances = new();
         private readonly Dictionary<ICanDie, Action<GameObject>> _activeMethods = new();
         private ObjectPool<GameObject> _indicatorPool;
         public void Reset()
         {
-            for (var i = _activePoolInstances.Count - 1; i >= 0; i--)
+            for (var i = activePoolInstances.Count - 1; i >= 0; i--)
             {
-                var poolObject = _activePoolInstances[i];
+                var poolObject = activePoolInstances[i];
                 if (poolObject.activeSelf) _indicatorPool.Release(poolObject);
             }
-            _activePoolInstances.Clear();
+            activePoolInstances.Clear();
         }
         private void Start() =>
             _indicatorPool = new ObjectPool<GameObject>(CreatePoolItem, OnGet, OnRelease);
         private void OnRelease(GameObject poolItem)
         {
+            activePoolInstances.Remove(poolItem);
             poolItem.SetActive(false);
-            _activePoolInstances.Remove(poolItem);
         }
         private void OnGet(GameObject poolItem)
         {
-            _activePoolInstances.Add(poolItem);
             poolItem.SetActive(true);
+            activePoolInstances.Add(poolItem);
         }
         private GameObject CreatePoolItem()
         {

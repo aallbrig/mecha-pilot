@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Backgrounds
 {
@@ -91,8 +94,14 @@ namespace Backgrounds
                 var randomX = Random.Range(bounds.min.x, bounds.max.x);
                 var randomY = Random.Range(bounds.min.y, bounds.max.y);
                 var randomPointInside = new Vector3(randomX, randomY, backgroundTransform.position.z);
+                #if UNITY_EDITOR
+                var prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                prefabInstance.transform.parent = backgroundContainer;
+                prefabInstance.transform.position = randomPointInside;
+                #else
                 var prefabInstance = Instantiate(prefab, backgroundContainer);
                 prefabInstance.transform.position = randomPointInside;
+                #endif
             }
         }
         public BackgroundContainer NewBackgroundContainer(MissingBackgroundContainerReport missingReport)
