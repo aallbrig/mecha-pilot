@@ -83,10 +83,13 @@ MonoBehaviour:
   score:
     score: 0
     initials: 
+    month: 0
+    day: 0
+    year: 0
     startTime: 0
     endTime: 0
   initials: {fileID: 3742244919373580802}
-  gameScore: {fileID: 3742244919373580802}
+  gameScore: {fileID: 3742244919354015895}
   playTime: {fileID: 3742244919987735110}
   playDate: {fileID: 3742244919688515231}
 --- !u!1 &3742244919354015889
