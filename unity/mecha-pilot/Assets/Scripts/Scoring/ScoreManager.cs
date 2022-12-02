@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,6 +8,7 @@ namespace Scoring
 {
     public class ScoreManager : MonoBehaviour
     {
+        public InitialLetterInputForm form;
         public ScoreRecord currentScore;
         public List<ScoreRecord> scores;
         public UnityEvent<ScoreAddedResult> onScoreAdded;
@@ -15,7 +17,7 @@ namespace Scoring
         {
             currentScore = new ScoreRecord
             {
-                playDate = DateTime.Today,
+                PlayDate = DateTime.Today,
                 startTime = Time.time,
                 score = 0
             };
@@ -43,5 +45,10 @@ namespace Scoring
         }
 
         public void SetEndTime() => currentScore.endTime = Time.time;
+        public void SaveScore()
+        {
+            if (form) currentScore.initials = form.GetInitials();
+            scores.Add(currentScore);
+        }
     }
 }

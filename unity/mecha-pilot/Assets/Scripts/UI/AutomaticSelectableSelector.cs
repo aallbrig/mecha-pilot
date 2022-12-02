@@ -3,16 +3,16 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class AutomaticButtonSelector : MonoBehaviour
+    public class AutomaticSelectableSelector : MonoBehaviour
     {
-        public Button targetButton;
+        public Selectable targetSelectable;
         public bool onEnableFlag;
         private void OnEnable()
         {
-            if (targetButton == null) return;
+            if (targetSelectable == null) return;
             if (onEnableFlag == false) return;
 
-            targetButton.Select();
+            targetSelectable.Select();
         }
     }
 }
